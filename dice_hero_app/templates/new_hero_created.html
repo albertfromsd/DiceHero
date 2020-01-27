@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dice Hero</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/new_dice_hero_css.css' %}">
+
+</head>
+<body>
+    <div class="entire_page">
+        <div class="header">
+            <p class="title">  </p>
+        </div>
+        <!-- end of header -->
+        <div class="stat_content_box">
+            <p class="text">Your hero's name is: {{ name }} [ID #{{ id }}]</p>
+            <p class="text">You are starting with {{ gold }} gold and {{ gems}} gems</p>
+            <p class="text">HP: {{ hp }}</p>
+            <p class="text">ATK: {{ atk }}</p>
+            <p class="text">DEF: {{ def }}</p>
+            <p class="text">INT: {{ int }}</p>
+            <p class="text">SPD: {{ spd }}</p>
+        </div>
+        <!-- end of main content -->
+        <div class="footer">
+            <form action='/dice_hero'>
+                {% csrf_token %}
+                <input type='hidden'>
+                <button type='submit' class="btn-primary top_buttons">Start your adventure!</button>
+            </form>
+        </div>
+        <!-- end of footer -->
+    </div>
+    <!-- end of entire page     -->
+</body>
+</html>

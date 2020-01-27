@@ -1,0 +1,24 @@
+
+### Create User ###
+User.objects.create(first_name="Albert", last_name="Ahn", email="albertfromsd@gmail.com")
+
+### Create Weapon 1 ###
+Weapon.objects.create(name="Weapon 1")
+
+### Create WpnDice 1 with Parent Weapon 1###
+WpnDice.objects.create(name="Basic Die 1", parent_wpn=Weapon.objects.get(id="1"))
+
+### Wpn1 Var ###
+Wpn1=Weapon.objects.get(id="1")
+
+### Create WpnDice Var ###
+new_wpn_die = WpnDice.objects.create
+
+### Create WpnDice 2 with Parent Weapon 1###
+WpnDice.objects.create(name="Basic Die 2", parent_wpn=Weapon.objects.get(id="1"))
+
+### Create WpnDice 3 with Parent Weapon 1###
+WpnDice.objects.create(name="Basic Die 3", parent_wpn=Weapon.objects.get(id="1"))
+
+### List all dice on weapon ###
+Weapon.objects.get(id="1").wpn_dice.all()

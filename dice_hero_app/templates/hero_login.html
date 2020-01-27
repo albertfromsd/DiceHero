@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dice Hero Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/hero_login_css.css' %}">
+
+</head>
+<body>
+    <div class="container entire_page">
+        <div class="row">
+            <p class="title">Login to Dice Hero! </p>
+        </div>
+        <!-- end of header -->
+        <div class="main_content">
+            <div class="login_box">
+                <h3>Login</h3>
+                <div>
+                    <form action='/process_login' method='post' class="hero_login">
+                        {% csrf_token %}
+                        <div class="login_bar">
+                            <label for="login_id">ID:</label>
+                            <input type="text" name="login_id" value="ID #" class="input_bar">
+                        </div>
+                        <div class="login_bar">
+                            <label for="login_email">Email:</label>
+                            <input type="text" name="login_email" value="Email" class="input_bar">
+                        </div>
+                        <div class="login_bar">
+                            <label for="login_pw">Password:</label>
+                            <input type="password" name="login_password" class="input_bar">
+                        </div>
+                        <div class="create_button">
+                            <input type='hidden' name='login'>
+                            <button type='submit' class="btn btn-primary top_buttons">Login</button>
+                        </div>
+                    </form>
+                    <div class="row2">
+                        <form action="/registration">
+                            <button type="submit" class="btn-primary top_buttons ">Register New User</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end of main content -->
+    </div>
+    <!-- end of entire page     -->
+</body>
+</html>

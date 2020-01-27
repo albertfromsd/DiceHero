@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register User</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/create_new_account_css.css' %}">
+
+</head>
+<body>
+    <div class="entire_page">
+        <div class="header">
+            <p class="title">Register </p>
+        </div>
+        <div class="message_box">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message|safe }}</li>
+                {% endfor %}
+            </ul>
+    </div> <!-- end of message_box -->
+        <!-- end of header -->
+        <div class="main_content">
+            <div class="create_hero_box">
+                <form action='/process_registration' method='post' class="create_hero_box">
+                    {% csrf_token %}
+                    <div class="create_hero_bar">
+                        <label>Username:</label>
+                        <input type="text" name="username" class="input_bar">
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>E-mail: </label>
+                        <input type="text" name="email" class="input_bar">
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>Password: </label>
+                        <input type="password" name="password" class="input_bar">
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>Confirm Password: </label>
+                        <input type="password" name="confirm_pw" class="input_bar">
+                    </div>
+                    <div class="create_button">
+                        <input type='hidden' name='register'>
+                        <button type='submit' class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+                <div class="create_button">
+                    <form action="/user_login">
+                        <input type='hidden' name='reset' value="logout">
+                        <button type='submit' class="btn btn-warning">Return to Login</button>
+                    </form>
+                </div>
+
+            </div> <!-- end of create user box -->
+        </div> <!-- end of main content -->
+        <div class="footer">
+
+        </div>
+        <!-- end of footer -->
+    </div>
+    <!-- end of entire page     -->
+</body>
+</html>

@@ -1,0 +1,220 @@
+* {
+    vertical-align: baseline;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    border: 0 none;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+}
+
+*{
+    margin: 0px auto;
+    /* border: 1px solid red; */
+}
+
+.flex_center {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-row {
+    flex-flow: row;
+}
+
+.button_row {
+    width: 100%;
+}
+
+.entire_page {
+    width: 1000px;
+    height: auto;
+
+}
+
+
+.header {
+    width: 100%;
+    height: 7%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+}
+
+.title {
+    color: gold;
+    font-size: 42px;
+    width: 75%;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.main_content {
+    width: 100%;
+    height: 70%;
+    padding:20px 0px 20px 0px;
+    border: 1px solid black;
+    display: flex;
+    flex-flow: row;
+}
+
+.creation {
+    width: 30%;
+    font-size: 21px;
+}
+
+.create_box {
+    width: 60%;
+    font-size: 20px;
+    display: flex;
+    flex-flow: column;
+}
+
+.form_box {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.input_box {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-flow: row;
+}
+
+
+.create_label_column {
+    width: 40%;
+    font-size: 16px;
+}
+
+.create_stat_column {
+    width: 65%;
+    font-size: 16px;
+
+}
+
+.create_bar {
+    display: flex;
+    flex-flow: column;
+    justify-content: end;
+    height: 20%;
+}
+
+.create_btn {
+    padding-bottom: 10px;
+}
+
+.new_instance_box {
+    border-left: 1px solid black;
+    width: 40%;
+    justify-content: left;
+    padding-left: 20px;
+}
+
+.new_instance_stats {
+    display: flex;
+    flex-flow: row;
+}
+
+.label_column {
+    width: 30%;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.label_text {
+    color: skyblue;
+}
+
+.stat_column {
+    width: 70%;
+}
+
+.stat_text {
+    color: blue;
+}
+
+.radio_box {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+
+}
+
+.radio_bar {
+    width: 50%;
+
+    
+}
+
+
+
+
+.table_caption {
+    background-color: rgb(57, 50, 50);
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    caption-side: top;
+    text-align: center;
+
+}
+
+.database {
+    width: 100%;
+    height: 700px;
+    margin: 0px;
+}
+
+.data {
+    font-size: 13px;
+}
+
+
+.edit_btn {
+    border: .5px solid red;
+    background: rgb(252, 174, 174);
+    color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.button_row {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+.db_btn {
+    border: 2px solid black;
+    padding: 10px;
+    margin: 10px;
+}
+
+.input_label {
+    text-align: right;
+    padding-right: 15px;
+}
+
+.input_stats {
+    margin-bottom: 7px;
+}
+
+.input_text {
+    background-color: aliceblue;
+    border: .5px solid skyblue;
+    width: 90%;
+}
+
+
+
+.pad_sides {
+    padding-left: 5px;
+    padding-right: 5px;
+}

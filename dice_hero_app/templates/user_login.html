@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dice Hero Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user_login_css.css' %}">
+
+</head>
+<body>
+    <div class="container entire_page">
+        <div class="row">
+            <p class="title">Login to Dice Hero! </p>
+        </div>
+        <!-- end of header -->
+        <div class="main_content">
+            <div class="login_box">
+                <div class="error_msg">
+                    <p class="text-center" style="color: {{color}}">{{ error }}</p>
+                </div>
+                <div class="row">
+                    <div>
+                        <form action='/process_login' method='post' class="user_login">
+                            {% csrf_token %}
+                            <div class="login_bar">
+                                <label for="username">Username:</label>
+                                <input type="text" name="username" class="input_bar">
+                            </div>
+                            <div class="login_bar">
+                                <label for="password">Password:</label>
+                                <input type="password" name="password" class="input_bar">
+                            </div>
+                            <br>
+                            <div class="flex-center">
+                                <input type='hidden' name='login'>
+                                <button type='submit' class="btn btn-primary top_buttons">Login</button>
+                            </div>
+                        </form>
+                        <div class="flex-center">
+                            <form action="/registration">
+                                <button type="submit" class="btn-link top_buttons ">Register New User</button>
+                            </form>
+                        </div>
+                    </div> <!-- [end] of row -->
+                </div>
+
+            </div>
+        </div>
+        <!-- end of main content -->
+    </div>
+    <!-- end of entire page     -->
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>POST SESSION DATA CHECKr</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/new_dice_hero_css.css' %}">
+
+</head>
+<body>
+    <div class="entire_page">
+        <div class="row">
+            <p class="title">request.POST </p>
+            <ul>
+                {% for k, v in postData.items %}
+                    <li> {{ k }}: {{ v }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="row">
+            <p class="title">request.session </p>
+            <ul>
+                {% for k, v in sessionData.items %}
+                    <li> {{ k }}: {{ v }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <p>name: {{ name }} </p>
+            <p>dob: {{ dob }} </p>
+            <p>dobStr: {{ dobStr }}</p>
+            <p>dobInteger: {{ dobInteger }}</p>
+            <p>today: {{ today }}</p>
+            <p> {{ message }} </p>    
+        </div>
+        <!-- end of header -->
+
+        <div class="footer">
+            <form action="/dice_reset" value="logout" method="post">
+                {% csrf_token %}
+                <button>Clear session</button>
+            </form>
+        </div>
+        <!-- end of footer -->
+    </div>
+    <!-- end of entire page     -->
+</body>
+</html>

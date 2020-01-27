@@ -1,0 +1,101 @@
+
+from dice_hero_app.models import *
+
+
+### [ALBERT] Create User ###
+User.objects.create(first_name="Albert", last_name="Ahn", email="albertfromsd@gmail.com")
+
+### [ALBERT] Retrieve User 1: Albert ###
+albert=User.objects.get(id="1")
+
+### [ALBERT] Create a Hero for  ###
+albert=User.objects.get(id="1")
+Hero.objects.create(name="Albert", owner=albert, gold="9999", gems="999", hp_base="150")
+
+### [ALBERT] Get Hero's user's name
+Hero.objects.get(id="1").user.first_name
+
+### Create Weapon 1 ###
+Weapon.objects.create(name="Weapon 1")
+
+### Create WpnDice 1 with Parent Weapon 1###
+WpnDice.objects.create(name="Basic Die 1", parent_wpn=Weapon.objects.get(id="1"))
+wd1=WpnDice.objects.get(id="1")
+
+### Wpn1 Var ###
+Wpn1=Weapon.objects.get(id="1")
+
+### Create WpnDice Var ###
+new_wpn_die = WpnDice.objects.create
+
+### Create WpnDice 2 with Parent Weapon 1###
+WpnDice.objects.create(name="Basic Die 2", parent_wpn=Weapon.objects.get(id="1"))
+
+### Create WpnDice 3 with Parent Weapon 1###
+WpnDice.objects.create(name="Basic Die 3", parent_wpn=Weapon.objects.get(id="1"))
+
+### List all dice on weapon ###
+Weapon.objects.get(id="1").wpn_dice.all()
+
+### [WPNDFACE]
+wd1=WpnDice.objects.get(id="1")
+WpnDface.objects.create(name="ATK 1", parent_die=wd1, roll_value="1")
+wdface1=WpnDFace.objects.get(id="1")
+WpnDface.objects.get(id="1").parent_die.name
+
+wdice1=WpnDice.objects.get(id="1").wpn_dfaces
+
+WpnDface.objects.create(name="ATK 1", roll_value="1")
+wdf1=WpnDface.objects.get(id="1")
+
+WpnDface.objects.create(name="ATK 2", roll_value="2")
+wdf3=WpnDface.objects.get(id="3")
+
+WpnDface.objects.create(name="ATK 3", roll_value="3")
+wdf4=WpnDface.objects.get(id="4")
+
+WpnDface.objects.create(name="ATK 4", roll_value="4")
+wdf5=WpnDface.objects.get(id="5")
+
+WpnDface.objects.create(name="ATK 5", roll_value="5")
+wdf6=WpnDface.objects.get(id="6")
+
+WpnDface.objects.create(name="ATK 6", roll_value="6")
+wdf2=WpnDface.objects.get(id="2")
+
+WpnDice.objects.get(id="1").add(wdf1, wdf2, wdf3, wdf4, wdf5, wdf6)  
+
+
+from dice_hero_app.models import *
+from dice_hero_app.models import *
+from dice_hero_app.models import *
+
+Hero.objects.get(id="1").add_weapon(wpn1)
+wpn1=Weapon.objects.get(id="1")
+wpn2=Weapon.objects.get(id="2")
+wpn3=Weapon.objects.get(id="3")
+
+wdf1=WpnDface.objects.get(id="1")
+wdf2=WpnDface.objects.get(id="2")
+wdf3=WpnDface.objects.get(id="3")
+wdf4=WpnDface.objects.get(id="4")
+wdf5=WpnDface.objects.get(id="5")
+wdf6=WpnDface.objects.get(id="6")
+
+Armor.objects.create(name="Armor")
+Armor.objects.get(id="1")
+Armor.objects.get(id="1").add_armor_dice(ArmorDice.objects.get(name="Armor3"))
+
+ArmorDice.objects.create(name="Armor1")
+ArmorDice.objects.create(name="Armor2")
+ArmorDice.objects.create(name="Armor3")
+
+ArmorDface.objects.create(name="ArmorDface1", roll_value="1")
+ArmorDface.objects.create(name="ArmorDface2", roll_value="2")
+ArmorDface.objects.create(name="ArmorDface3", roll_value="3")
+
+User.objects.create(first_name="al", last_name="bert", email="albertfromsd@gmail.com", password="123123123")
+
+BasicDface.objects.get(id="1")
+BDF1=BasicDface.objects.get(id="1")
+WpnDice.objects.get(id="1").basic_dfaces.add(

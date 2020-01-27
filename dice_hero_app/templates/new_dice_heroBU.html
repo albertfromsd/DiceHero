@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dice Hero</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/new_dice_hero_css.css' %}">
+
+</head>
+<body>
+    <div class="entire_page">
+        <div class="header">
+            <p class="title">{{ message }} </p>
+            <p> Logged in as: {{ user }} [ID #{{ user_id }}]</p>
+        </div>
+        <!-- end of header -->
+        <div class="main_content">
+            <div class="create_hero_box">
+                <form action='/process_create_hero' method='post' class="create_hero_box">
+                    {% csrf_token %}
+                    <div class="create_hero_bar">
+                        <label for="new_hero_name">Hero Name:</label>
+                        <input type="text" name="hero_name" class="input_bar">
+                    </div>
+                    <div class="text_bar">
+                        <!-- jQuery here -->
+                        <p class="text">Available Stat Points: </p>
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>HP: </label>
+                        <input type="number" name="hp_base" value="100" class="input_bar">
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>Attack: </label>
+                        <input type="number" name="atk_base" value="1" class="input_bar">
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>Defense: </label>
+                        <input type="number" name="def_base" value="1" class="input_bar">
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>Intelligence: </label>
+                        <input type="number" name="int_base" value="1" class="input_bar">
+                    </div>
+                    <div class="create_hero_bar">
+                        <label>Speed: </label>
+                        <input type="number" name="spd_base" value="1" class="input_bar">
+                    </div>
+                    <div class="create_button">
+                        <input type='hidden' name='model_button' value="create_hero">
+                        <button type='submit' class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- end of main content -->
+        <div class="footer">
+
+        </div>
+        <!-- end of footer -->
+    </div>
+    <!-- end of entire page     -->
+</body>
+</html>
