@@ -48,32 +48,36 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"<ID: #{self.id}][Username: {self.username}][Email: {self.email}] [Heroes: {self.heroes.all()}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}]", f"[Username: {self.name}]", f"[Email: {self.email}]", "***********"])
 
 
 ####################################
 ######          Hero          ######
 ####################################
 class Hero(models.Model):
-    name = models.CharField(max_length=255)
-    level = models.IntegerField(MaxValueValidator(99), default=1)
-    user = models.ForeignKey(User, related_name="heroes", on_delete="CASCADE", blank=True, null=True)
+    name = models.CharField(max_length=25)
+    level = models.IntegerField(MaxValueValidator(9999), default=1)
+    user = models.ForeignKey(User, related_name="heroes", on_delete="models.CASCADE", blank=True, null=True)
     #inventory
-    gold = models.IntegerField(MaxValueValidator(999999), default=100)
-    gems = models.IntegerField(MaxValueValidator(99999), default=10)
+    gold = models.IntegerField(MaxValueValidator(9999999), default=500)
+    gems = models.IntegerField(MaxValueValidator(999999), default=60)
     #base stats
-    hp_base = models.IntegerField(MaxValueValidator(999), default=100)
-    atk_base = models.IntegerField(MaxValueValidator(99), default=0)
-    def_base = models.IntegerField(MaxValueValidator(99), default=0)
-    int_base = models.IntegerField(MaxValueValidator(99), default=0)
-    spd_base = models.IntegerField(MaxValueValidator(99), default=0)
+    hp_base = models.IntegerField(MaxValueValidator(99999), default=100)
+    atk_base = models.IntegerField(MaxValueValidator(999), default=0)
+    def_base = models.IntegerField(MaxValueValidator(999), default=0)
+    int_base = models.IntegerField(MaxValueValidator(999), default=0)
+    spd_base = models.IntegerField(MaxValueValidator(999), default=5)
+    #equip equipment
+    # wpn1 = 
+    # wpn2 = 
+    # armor = 
 
-    def add_weapon(self, weapon):
+    def equip_weapon(self, weapon):
         if self.weapons.count() >= 2:
             raise Exception("Only two weapons allowed per hero")
         self.weapons.add(weapon)
 
-    def add_armor(self, armor):
+    def equip_armor(self, armor):
         if self.armors.count() >= 1:
             raise Exception("Only 1 armor allowed per hero")
         self.armors.add(armor)
@@ -83,7 +87,7 @@ class Hero(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"<[ID: {self.id}][Hero name: {self.name}] [User: {self.user}]  /// [HP: {self.hp_base}] [ATK: {self.atk_base}] [DEF: {self.def_base}] [INT: {self.int_base}] [SPD: {self.spd_base}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}]", f"[Hero: {self.name}]", f"[Level: {self.level}]", f"[User: {self.user}]", f"[HP: {self.hp_base}]", f"[ATK: {self.atk_base}]", f"[DEF: {self.def_base}]", f"[INT: {self.int_base}]", f"[SPD: {self.spd_base}]", "**********"])
 
 ####################################
 ######         Weapon         ######
@@ -91,17 +95,17 @@ class Hero(models.Model):
 class Weapon(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="weapons", on_delete="CASCADE", blank=True, null=True)
-    level = models.IntegerField(MaxValueValidator(99), default=1)
-    price = models.IntegerField(MaxValueValidator(9999), default=100)
+    owner = models.ForeignKey(Hero, related_name="weapons", on_delete=models.CASCADE, blank=True, null=True)
+    level = models.IntegerField(MaxValueValidator(999), default=1)
+    price = models.IntegerField(MaxValueValidator(99999), default=500)
     slots = models.IntegerField(MaxValueValidator(10), default=2)
 
     #stat boosts
-    hp_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    atk_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    def_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    int_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    spd_boost = models.IntegerField(MaxValueValidator(99), default=0)
+    hp_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    atk_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    def_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    int_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    spd_boost = models.IntegerField(MaxValueValidator(999), default=0)
 
     def add_wpn_dice(self, wpndice):
         if self.wpn_dice.count() >= self.slots:
@@ -113,7 +117,7 @@ class Weapon(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"< [ID: {self.id}][Weapon name: {self.name}] /// [ATK: {self.attack}] [# of slots: {self.slots}] ***** [Dice: {self.wpn_dice.all()}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}][Weapon: {self.name}][Price: {self.price}]", f"[ATK: {self.atk_boost}][DEF: {self.def_boost}][INT: {self.int_boost}][SPD: {self.spd_boost}][# of slots: {self.slots}]", "***********"])
 
 
 ####################################
@@ -122,10 +126,10 @@ class Weapon(models.Model):
 class WpnDice(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="wpn_dice", on_delete="CASCADE", blank=True, null=True)
-    parent = models.ForeignKey(Weapon, related_name="wpn_dice", on_delete="CASCADE", blank=True, null=True)
-    level = models.IntegerField(MaxValueValidator(99), default=1)
-    price = models.IntegerField(MaxValueValidator(9999), default=10)
+    owner = models.ForeignKey(Hero, related_name="wpn_dice", on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey(Weapon, related_name="wpn_dice", on_delete=models.CASCADE, blank=True, null=True)
+    level = models.IntegerField(MaxValueValidator(999), default=1)
+    price = models.IntegerField(MaxValueValidator(99999), default=1000)
 
     def add_wpn_dface(self, wpn_dface):
         if self.wpn_dfaces.count() >= 6:
@@ -137,7 +141,7 @@ class WpnDice(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"<[ID: {self.id}][WpnDice Name: {self.name}] [Owner: {self.owner}] [Price: {self.price}] ***** [Dfaces: {self.wpn_dfaces.all()}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}][WpnDice: {self.name}][Price: {self.price}][Parent: {self.parent}]", "***********"])
 
 
 ####################################
@@ -146,10 +150,10 @@ class WpnDice(models.Model):
 class WpnDface(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="wpn_dfaces", on_delete="CASCADE", blank=True, null=True)
-    parent = models.ForeignKey(WpnDice, related_name="wpn_dfaces", on_delete="CASCADE", blank=True, null=True)
-    level = models.IntegerField(MaxValueValidator(99), default=1)
-    price = models.IntegerField(MaxValueValidator(9999), default=10)
+    owner = models.ForeignKey(Hero, related_name="wpn_dfaces", on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey(WpnDice, related_name="wpn_dfaces", on_delete=models.CASCADE, blank=True, null=True)
+    level = models.IntegerField(MaxValueValidator(999), default=1)
+    price = models.IntegerField(MaxValueValidator(99999), default=50)
 
     #battle
     roll_value = models.IntegerField(MaxValueValidator(10), default=0)
@@ -158,9 +162,8 @@ class WpnDface(models.Model):
     #time stamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     def __repr__(self):
-        return f"< [ID: {self.id}][WpnDFace name: {self.name}] [Owner: {self.owner}] [Price: {self.price}] /// Roll Value: [{self.roll_value}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}][WpnDface: {self.name}][Price: {self.price}]", f"[Owner: {self.owner}][Parent: {self.parent}]",  f"[Roll Value: {self.roll_value}][Critical: {self.critical}]", "----------"])
 
 ####################################
 ######         Armor          ######
@@ -168,17 +171,17 @@ class WpnDface(models.Model):
 class Armor(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="armors", on_delete="CASCADE", blank=True, null=True)
-    level = models.IntegerField(MaxValueValidator(99), default=1)
-    price = models.IntegerField(MaxValueValidator(9999), default=100)
+    owner = models.ForeignKey(Hero, related_name="armors", on_delete=models.CASCADE, blank=True, null=True)
+    level = models.IntegerField(MaxValueValidator(999), default=1)
+    price = models.IntegerField(MaxValueValidator(99999), default=1000)
     slots = models.IntegerField(MaxValueValidator(10), default=2)
 
     #stat boosts
-    hp_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    atk_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    def_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    int_boost = models.IntegerField(MaxValueValidator(99), default=0)
-    spd_boost = models.IntegerField(MaxValueValidator(99), default=0)
+    hp_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    atk_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    def_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    int_boost = models.IntegerField(MaxValueValidator(999), default=0)
+    spd_boost = models.IntegerField(MaxValueValidator(999), default=0)
 
     def add_armor_dice(self, armordice):
         if self.armor_dice.count() >= self.slots:
@@ -190,17 +193,16 @@ class Armor(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __repr__(self):
-        return f"< [ID: {self.id}][Armor name: {self.name}] [Owner: {self.owner}] /// [DEF: {self.defense}] [# of slots: {self.slots}] *****  [Dice: {self.armor_dice.all()}] >"
-
+        return '\n'.join([f"----------", f"[ID #{self.id}][Armor: {self.name}][Owner: {self.owner}][Price: {self.price}]", f"[ATK: {self.atk_boost}][DEF: {self.def_boost}][INT: {self.int_boost}][SPD: {self.spd_boost}][# of slots: {self.slots}]", "**********"])
 ####################################
 ######      Armor Dice        ######
 ####################################
 class ArmorDice(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="armor_dice", on_delete="CASCADE", blank=True, null=True)
-    parent = models.ForeignKey(Armor, related_name="armor_dice", on_delete="CASCADE", blank=True, null=True)
-    price = models.IntegerField(MaxValueValidator(9999), default=10)
+    owner = models.ForeignKey(Hero, related_name="armor_dice", on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey(Armor, related_name="armor_dice", on_delete=models.CASCADE, blank=True, null=True)
+    price = models.IntegerField(MaxValueValidator(99999), default=2000)
 
     def add_armor_dface(self, armor_dface):
         if self.armor_dfaces.count() >= 6:
@@ -212,7 +214,7 @@ class ArmorDice(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"<[ID: {self.id}][ArmorDice name: {self.name}] [Owner: {self.owner}]  ***** [Dfaces: {self.armor_dfaces.all()}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}][ArmorDice: {self.name}][Price: {self.price}]", f"[Owner: {self.owner}][Parent: {self.parent}]", "**********"])
 
 
 
@@ -222,12 +224,12 @@ class ArmorDice(models.Model):
 class ArmorDface(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="armor_dfaces", on_delete="CASCADE", blank=True, null=True)
-    parent = models.ForeignKey(ArmorDice, related_name="armor_dfaces", on_delete="CASCADE", blank=True, null=True)
-    price = models.IntegerField(MaxValueValidator(9999), default=10)
+    owner = models.ForeignKey(Hero, related_name="armor_dfaces", on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey(ArmorDice, related_name="armor_dfaces", on_delete=models.CASCADE, blank=True, null=True)
+    price = models.IntegerField(MaxValueValidator(99999), default=100)
 
     #battle
-    roll_value = models.IntegerField(MaxValueValidator(10), default=0)
+    roll_value = models.IntegerField(MaxValueValidator(99), default=0)
     critical = models.CharField(max_length=5, default="False")
 
     #time stamps
@@ -235,7 +237,7 @@ class ArmorDface(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"< [ID: {self.id}][ArmorDFace name: {self.name}] /// Roll Value: [{self.roll_value}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}][ArmorDface: {self.name}][Price: {self.price}]", f"[Owner: {self.owner}][Parent: {self.parent}]", f"[Roll Value: {self.roll_value}][Critical: {self.critical}]"])
 
 # ####################################
 # ######       Accessory        ######
@@ -257,13 +259,14 @@ class ArmorDface(models.Model):
 #     def __repr__(self):
 #         return f"<[Accessory name: {self.name}] [Price: {self.price}] [ID: {self.id}] /// Abilities: [{self.ability1.name}][{self.ability2.name}]>"
 
+
 ####################################
 ######         Items          ######
 ####################################
 class Item(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="items", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="items", on_delete=models.CASCADE, blank=True, null=True)
     price = models.IntegerField(MaxValueValidator(9999), default=100)
 
     #I.e. Heal: 100
@@ -284,27 +287,38 @@ class Item(models.Model):
 ####################################
 class Enemy(models.Model):
     #info
-    name = models.CharField(max_length=255)
-    level = models.IntegerField(MaxValueValidator(99), default=1)
+    name = models.CharField(max_length=25)
+    level = models.IntegerField(MaxValueValidator(999), default=1)
     element = models.CharField(max_length=15, blank=None, null=None)
+    
+
+    #attack
+    rolls = models.IntegerField(MaxValueValidator(999), default=2)
+    s1 = models.IntegerField(MaxValueValidator(99), default=1)
+    s2 = models.IntegerField(MaxValueValidator(99), default=1)
+    s3 = models.IntegerField(MaxValueValidator(99), default=1)
+    s4 = models.IntegerField(MaxValueValidator(99), default=1)
+    s5 = models.IntegerField(MaxValueValidator(99), default=2)
+    s6 = models.IntegerField(MaxValueValidator(99), default=0)
 
     #rewards
-    gold = models.IntegerField(MaxValueValidator(9999), default=10)
-    gems = models.IntegerField(MaxValueValidator(999), default=1)
+    gold = models.IntegerField(MaxValueValidator(99999), default=10)
+    gems = models.IntegerField(MaxValueValidator(9999), default=1)
     items = models.ManyToManyField(Item, related_name="enemy_drop", blank=True)
 
     #base stats
-    hp = models.IntegerField(MaxValueValidator(99), default=100)
-    atk = models.IntegerField(MaxValueValidator(99), default=0)
-    defense = models.IntegerField(MaxValueValidator(99), default=0)
-    spd = models.IntegerField(MaxValueValidator(99), default=0)
+    hp_base = models.IntegerField(MaxValueValidator(999), default=100)
+    atk_base = models.IntegerField(MaxValueValidator(999), default=0)
+    def_base = models.IntegerField(MaxValueValidator(999), default=0)
+    int_base = models.IntegerField(MaxValueValidator(999), default=0)
+    spd_base = models.IntegerField(MaxValueValidator(999), default=5)
 
     #time stamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"<[ID: {self.id}][Enemy name: {self.name}]  /// [HP: {self.hp}] [ATK: {self.atk}] [DEF: {self.defense}] [SPD: {self.spd}]>"
+        return '\n'.join([f"----------", f"[ID #{self.id}]", f"[Enemy: {self.name}]", f"[Level: {self.level}]", f"[HP: {self.hp_base}]", f"[ATK: {self.atk_base}]", f"[DEF: {self.def_base}]", f"[INT: {self.int_base}]", f"[SPD: {self.spd_base}]",  f"[Gold dropped: {self.gold}]",  f"[Gems given: {self.gems}]", f"[Items dropped: {self.items}]", "----------"])
 
 
 ####################################
@@ -331,6 +345,7 @@ class Ability(models.Model):
     def __repr__(self):
         return f"<[ID: {self.id}] [Ability name: {self.name}] [Price: {self.price}]>"
 
+
 ####################################
 ######        Element         ######
 ####################################
@@ -350,6 +365,7 @@ class Element(models.Model):
 
     def __repr__(self):
         return f"<[ID: {self.id}][Element name: {self.name}]>"
+
 
 
 

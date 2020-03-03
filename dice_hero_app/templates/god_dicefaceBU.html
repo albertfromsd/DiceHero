@@ -186,38 +186,29 @@
                             <input type="text" name="df_ability" value="ability" class="input_text">
                         </div> -->
                     </div> <!-- [end] create label column -->
-                <div class="create_stat_column">
-                    <div class="input_stats">
-                        <input type="text" name="df_name" value="" class="input_text">
-                    </div>
-                    <div class="radio_box">
-                        <label class="radio_bar">
-                            <input type="radio" name="df_type" value="WpnDface" style="margin-left: 20px">Weapon
-                        </label>
-                        <label class="radio_bar">
-                            <input type="radio" name="df_type" value="ArmorDface">Armor
-                        </label>
-                    </div>
-                    <div class="input_stats">
-                        <input type="text" name="df_element" value="None" class="input_text">
-                    </div>
-                    <div class="input_stats">
-                        <input type="number" name="df_price" value ="10" class="input_text">
-                    </div>
-                    <div class="input_stats">
-                        <input type="number" name="df_roll_value" value="1" class="input_text">
-                    </div>
-    
-                    <!-- <div class="input_bar">
-                        <label for="mod_diceface_critical">Critical?</label>
-                        <input type="text" name="df_critical" value="critical" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label for="mod_diceface_ability">Ability</label>
-                        <input type="text" name="df_ability" value="ability" class="input_text">
-                    </div> -->
-            </div> <!-- [end] enter stat column -->  
-        </div> <!-- [end] input box -->
+                    <div class="create_stat_column">
+                        <div class="input_stats">
+                            <input type="text" name="df_name" value="" class="input_text">
+                        </div>
+                        <div class="radio_box">
+                            <label class="radio_bar">
+                                <input type="radio" name="df_type" value="WpnDface" style="margin-left: 20px">Weapon
+                            </label>
+                            <label class="radio_bar">
+                                <input type="radio" name="df_type" value="ArmorDface">Armor
+                            </label>
+                        </div>
+                        <div class="input_stats">
+                            <input type="text" name="df_element" value="None" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="df_price" value ="10" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="df_roll_value" value="1" class="input_text">
+                        </div>
+                    </div> <!-- [end] create stat column -->  
+                </div> <!-- [end] input box -->
                 <!-- SUBMIT BUTTON -->
                 <br>
                 <div class="create_bar">
@@ -225,8 +216,20 @@
                     <button type='submit' class="btn btn-primary btn-block create_btn">Create Diceface</button>
                 </div>
             </form>
+            <div class="easy_create_bar btn-group btn-group-sm text-center" role="group">
+                <form action="/basic_wpndfaces">
+                    {% csrf_token %}
+                    <input type='hidden' name='basic'>
+                    <button type='submit' class="btn btn-link basic_btn">Basic WpnDfaces</button>
+                </form>
+                <form action="/basic_armordfaces">
+                    {% csrf_token %}
+                    <input type='hidden' name='basic'>
+                    <button type='submit' class="btn btn-link basic_btn">Basic ArmorDfaces</button>
+                </form>
+            </div>
 
-            </div> <!-- [end] create box -->
+        </div> <!-- [end] create box -->
 <!-- #################################### -->
 <!-- ######   New Creation Stats   ###### -->
 <!-- #################################### -->       

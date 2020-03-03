@@ -52,35 +52,41 @@
                             God Mode
                         </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item">
-                                    <form action="/god_hero">
-                                        <button class="btn-block">Create/Modify Hero</button>
-                                    </form>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_diceface">
-                                        <button class="btn-block">Create Dice Faces </button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_hero">
+                                    <button class="btn-block">God of Heroes</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_dice">
-                                        <button class="btn-block">Create Dice</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_equip">
+                                    <button class="btn-block">God of Equipment</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_equipment">
-                                        <button class="btn-block">Create Equipment</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_dice">
+                                    <button class="btn-block">God of Dice</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_item">
-                                        <button class="btn-block">Create Items</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_diceface">
+                                    <button class="btn-block">God of Dicefaces </button>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                                <form action="/god_enemy">
+                                    <button class="btn-block">God of Enemies </button>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                                <form action="/god_item">
+                                    <button class="btn-block">God of Items</button>
+                                </form>
+                            </a>
                             </div>
                     </li>  <!-- [end] godmode dropdown -->
                     <li class="nav-item dropdown">
@@ -108,6 +114,14 @@
                         </div>
                     </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    
+                    <li class="nav-item">
                         <form action='/inspect_hero'>
                             {% csrf_token %}
                             <input type='hidden'>
@@ -115,7 +129,7 @@
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">{{ hero_name }} <br>[ID: {{ hero_id }}]</a>
+                        <a class="nav-link disabled" href="#">{{ hero_name }} <br>[ID: {{ hero_id }}]         </a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method='post'>
@@ -126,11 +140,11 @@
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create<br>New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Logged in as:<br>{{ username }} [ID: {{ userid }}]</a>
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -195,8 +209,21 @@
                     <input type='hidden' name='god_dice'>
                     <button type='submit' class="btn btn-primary btn-block create_btn">Create Die</button>
                 </div>
-            </form>
+            </form>  <!-- [end] create custom die -->
+            <div class="easy_create_bar btn-group btn-group-sm text-center" role="group">
+                <form action="/basic_wpndice">
+                    {% csrf_token %}
+                    <input type='hidden' name='basic'>
+                    <button type='submit' class="btn btn-link basic_btn">Basic Weapon Dice</button>
+                </form>
+                <form action="/basic_armordice">
+                    {% csrf_token %}
+                    <input type='hidden' name='basic'>
+                    <button type='submit' class="btn btn-link basic_btn">Basic Armor Dice</button>
+                </form>
+            </div>
         </div> <!-- [end] create box -->
+
 <!-- #################################### -->
 <!-- ######   New Creation Stats   ###### -->
 <!-- #################################### -->     

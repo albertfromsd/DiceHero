@@ -14,10 +14,17 @@
     margin: 0px auto;
 }
 
+.hidden {
+    display: none;
+}
 
 .entire_page {
-    width: 1000px;
-    height: 800px;
+    width: 900px;
+    height: 900px;
+}
+
+#roll {
+
 }
 
 .header {
@@ -43,10 +50,63 @@
     border: 1px solid black;
 }
 
-.action_bar {
-    height: 15%;
+.action_screen {
+    background: url("/static/img/bg/dark_canyon.png") no-repeat;
+    background-position: center center;
+    background-size: 100%;
+    height: 58%;
+    display: flex;
+    flex-flow: row;
 }
 
+.battle_bg {
+    width: 100%;
+    height: 100%;
+}
+
+.action_column {
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+
+.hero_sprite_box {
+    /* border: 1px solid green; */
+    display: flex;
+    flex-flow: row;
+    position: absolute;
+    bottom: 20px;
+    left: 80px;
+    width: 150px;
+    height: 150px;
+}
+
+.hero_sprite {
+    height: 100%;
+}
+
+.enemy_sprite_box {
+    /* border: 1px solid blue;
+    background-color: yellow; */
+    position: absolute;
+    bottom: 20px;
+    right: 80px;
+    width: 300px;
+    height: 300px;
+}
+
+.enemy_sprite {
+    height: 100%;
+}
+
+.action_bar {
+    height: 10%;
+}
+
+.hero_buttons {
+    background-color: rgb(77, 81, 84);
+    border: 2px solid white;
+}
 
 
 .create_hero_box {
@@ -74,6 +134,28 @@
     margin-left: 0px;
 }
 
+.enemy_bar {
+    background-color: rgb(250, 129, 129);
+    border: 2px solid black;
+    border-bottom: 1px solid black;
+    color: white;
+}
+
+.hero_bar {
+    background-color: rgb(137, 137, 247);
+    border: 2px solid black;
+    border-top: 1px solid black;
+    color: white;
+}
+
+.status_column {
+    height: 100%;
+    display:flex;
+    flex-flow: row;
+    justify-content: space-between;
+
+}
+
 .active_player {
     width: 25%;
     height: 100%;
@@ -85,7 +167,8 @@
     height: 100%;
     display: flex;
     flex-flow: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    color: black;
 }
 
 
@@ -95,12 +178,14 @@
 
 .enemy_status_text {
     font-size: 20px;
-    width: 100%
+    width: 100%;
+    height: 50%;
 }
 
 .hero_status_text {
     font-size: 20px;
     width: 100%;
+    height: 50%;
 }
 
 .enemy_roll {
@@ -109,8 +194,7 @@
     font-weight: bold;
     width: 50px;
     height: 50px;
-    display: flex;
-    justify-content: center;
+
 }
 
 .hero_roll {
@@ -119,19 +203,20 @@
     font-weight: bold;
     width: 50px;
     height: 50px;
-    display: flex;
-    justify-content: center;
+
 }
 
 .activity_log_box {
     width: 100%;
-    height: 200px;
-    background-color: beige;
+    height: 22%;
+    background-color: rgb(238, 228, 228);
     display: flex;
     justify-content: center;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
 }
 
-.hero_log_box {
+#hero_log_box {
     width: 50%;
     height: 100%;
     color: blue;
@@ -140,7 +225,7 @@
     border: 1px solid black;
 }
 
-.enemy_log_box {
+#enemy_log_box {
     width: 50%;
     height: 100%;
     color: red;
@@ -174,9 +259,12 @@
     padding: 10px;
 }
 
+.hero_btn_box {
+    width: 25%;
+}
+
 .hero_btn {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 15px;
 }
 
 .enemy_roll_box {

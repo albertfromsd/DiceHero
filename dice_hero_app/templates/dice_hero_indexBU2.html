@@ -24,10 +24,6 @@
         // end of document.on
     </script>
 </head>
-
-<!-- ################################ -->
-<!-- ######      Page Start    ###### -->
-<!-- ################################ -->
 <body>
     <div class="container entire_page">
 <!-- ################################ -->
@@ -48,71 +44,91 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item">
                                     <form action="/god_hero">
-                                        <button type="become_god" class="btn-block">Create/Modify Hero</button>
+                                        <button class="btn-block">Create/Modify Hero</button>
                                     </form>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item">
                                     <form action="/god_diceface">
-                                        <button type="become_god" class="btn-block">Create DiceFaces </button>
+                                        <button class="btn-block">Create Dice Faces </button>
                                     </form>
                                 </a>
                             <div class="dropdown-divider"></div>
                                 <a class="dropdown-item">
-                                    <form action="/god_wpn_dice">
-                                        <button type="become_god" class="btn-block">Create Weapon Dice</button>
+                                    <form action="/god_dice">
+                                        <button class="btn-block">Create Dice</button>
                                     </form>
                                 </a>
                             <div class="dropdown-divider"></div>
                                 <a class="dropdown-item">
-                                    <form action="/god_armor_dice">
-                                        <button type="become_god" class="btn-block">Create Armor Dice</button>
+                                    <form action="/god_equip">
+                                        <button class="btn-block">Create Equipment</button>
                                     </form>
-                                </a>
-                            <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_weapon">
-                                        <button type="become_god" class="btn-block">Create Weapons</button>
-                                    </form>
-                                </a>
-                            <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_armor">
-                                        <button type="become_god" class="btn-block">Create Armor</button>
-                                    </form>
-                                </a>
+                                </a>                            
                             <div class="dropdown-divider"></div>
                                 <a class="dropdown-item">
                                     <form action="/god_item">
-                                        <button type="become_god" class="btn-block">Create Items</button>
+                                        <button class="btn-block">Create Items</button>
+                                    </form>
+                                </a>
+                            </div>
+                    </li>  <!-- [end] godmode dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Shops
+                        </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item">
+                                    <form action="/equipment_shop">
+                                        <button class="btn-block">Equipment</button>
+                                    </form>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/dice_shop">
+                                        <button class="btn-block">Dice and Dicefaces </button>
+                                    </form>
+                                </a>
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/levelup">
+                                        <button class="btn-block">Increase Stats</button>
                                     </form>
                                 </a>
                         </div>
-                    </li>
+                    </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <form action='/store' method='post'>
+                        <form action='/dice_hero'>
                             {% csrf_token %}
-                            <input type='hidden' name='store' value="store">
-                            <button type='submit'class="nav-link bg-dark md-light">Store</button>
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <form action='/inspect_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Hero</button>
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Hero: {{ hero_name }} [ID: {{ hero_id }}]         </a>
+                        <a class="nav-link disabled" href="#">{{ hero_name }} <br>[ID: {{ hero_id }}]         </a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='reset' value="reset">
-                            <button type='submit'class="nav-link bg-dark md-light">Start Over</button>
+                            <button type='submit'class="nav-link bg-dark md-light">Reset</button>
                         </form>
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -131,36 +147,36 @@
 <!-- ######    Main Content    ###### -->
 <!-- ################################ -->
         <div class="main_content">
-            <div class="action_bar">
+            <div class="action_screen">
 
             </div>
             <div class="row action_bar enemy_bar container-fluid">
-                <div class="col-md-3">
-                    <p class="enemy_status_text"> Enemy Roll Results: </p>
+                <div class="col-md-3 status_column">
+                    <p class="enemy_status_text"> Enemy Roll: </p>
                 </div>
                 <div class="col-md-6 roll_results">
                     {% for enemy_atk in enemy_roll %}
                     <div class="enemy_roll"> {{ enemy_atk }} </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 status_column">
                     <p class="enemy_status_text"> Enemy HP:
-                    <p class="enemy_status_text text-right">{{ EHPR }} / {{ EHPT }}</p> {# Enemy HP Remaining / Enemy HP Total#}</p>
+                    <p class="enemy_status_text text-right">{{ enemy_life }} / {{ enemy_hpb }}</p> {# Enemy HP Remaining / Enemy HP Total#}</p>
                 </div>
             </div>
             <!-- end of enemy -->
             <div class="row action_bar hero_bar container-fluid">
                 <div class="col-md-3">
-                    <p class="hero_status_text"> Hero Roll Results: </p>
+                    <p class="hero_status_text status_column"> Hero Roll: </p>
                 </div> 
                 <div class="roll_results col-md-6">
                     {% for hero_atk in hero_roll %}
                         <div class="hero_roll"> {{ hero_atk }} </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 status_column">
                     <p class="hero_status_text"> Hero HP:
-                    <p class="hero_status_text text-right">{{ HHPR }} / {{ HHPT }}</p> {# Hero HP Remaining / Hero HP Total#}</p>
+                    <p class="hero_status_text text-right">{{ hero_life }} / {{ hero_hpb }}</p> {# Hero HP Remaining / Hero HP Total#}</p>
                 </div>
             </div>
             <div class="activity_log_box">
@@ -178,35 +194,36 @@
 <!-- ################################ -->
 <!-- ######      Dice Bar      ###### -->
 <!-- ################################ -->
-        <div class="row container_fluid footer">
+        <div class="row container_fluid footer hero_buttons">
             <div class="col-md-6">
-                    <div class="btn-group btn-group-lg " role="group">
+                    <div class="btn-group btn-group-lg" role="group">
                         <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w1">
-                            <button type='submit' class="btn-primary hero_btn"> Weapon #1</button>
+                            <button type='submit' class="btn-primary hero_btn"> Wpn #1</button>
                         </form>
                         <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w2">
-                            <button type='submit' class="btn-success hero_btn"> Weapon #2</button>
+                            <button type='submit' class="btn-success hero_btn"> Wpn #2</button>
                         </form>
-                        <!-- <form action='/hero_roll' method='post'>
+                        <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w3">
-                            <button type='submit' class="btn-info hero_btn"> Dice #3</button>
+                            <button type='submit' class="btn-warning hero_btn"> Items </button>
                         </form>
-                        <form action='/hero_roll' method='post'>
-                            {% csrf_token %}
-                            <input type='hidden' name='hero_weapon' value="w4">
-                            <button type='submit' class="btn-warning hero_btn"> Dice #4</button>
-                        </form>
-                        <form action='/hero_roll' method='post'>
+                        <!-- <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w5">
                             <button type='submit' class="btn-success hero_btn"> Dice #5</button>
                         </form> -->
-                    </div>
+                        <form action='/hero_roll' method='post'>
+                            {% csrf_token %}
+                            <input type='hidden' name='hero_weapon' value="w4">
+                            <button type='submit' class="btn-basic hero_btn">Rest</button>
+                        </form>
+                    </div> <!-- [end] hero button group -->
+                        
             </div>
             <div class="col-md-5 flex_col_cen">
                 <form action='/enemy_roll' method='post'>

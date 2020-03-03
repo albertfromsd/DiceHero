@@ -13,10 +13,7 @@
 <!-- ######   jQuery Source    ###### -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            console.log("I'm ready!");
         
-        });
         // end of document.ready
         $(document).on('eventlistener', 'class_id_selector', function() {
             console.log("Document is on, too!")
@@ -24,10 +21,6 @@
         // end of document.on
     </script>
 </head>
-
-<!-- ################################ -->
-<!-- ######      Page Start    ###### -->
-<!-- ################################ -->
 <body>
     <div class="container entire_page">
 <!-- ################################ -->
@@ -46,35 +39,41 @@
                             God Mode
                         </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item">
-                                    <form action="/god_hero">
-                                        <button class="btn-block">Create/Modify Hero</button>
-                                    </form>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_diceface">
-                                        <button class="btn-block">Create Dice Faces </button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_hero">
+                                    <button class="btn-block">God of Heroes</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_dice">
-                                        <button class="btn-block">Create Dice</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_equip">
+                                    <button class="btn-block">God of Equipment</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_equip">
-                                        <button class="btn-block">Create Equipment</button>
-                                    </form>
-                                </a>                            
+                            <a class="dropdown-item">
+                                <form action="/god_dice">
+                                    <button class="btn-block">God of Dice</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_item">
-                                        <button class="btn-block">Create Items</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_diceface">
+                                    <button class="btn-block">God of Dicefaces </button>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                                <form action="/god_enemy">
+                                    <button class="btn-block">God of Enemies </button>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                                <form action="/god_item">
+                                    <button class="btn-block">God of Items</button>
+                                </form>
+                            </a>
                             </div>
                     </li>  <!-- [end] godmode dropdown -->
                     <li class="nav-item dropdown">
@@ -102,6 +101,14 @@
                         </div>
                     </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    
+                    <li class="nav-item">
                         <form action='/inspect_hero'>
                             {% csrf_token %}
                             <input type='hidden'>
@@ -120,8 +127,11 @@
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create<br>New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -139,45 +149,58 @@
 <!-- ################################ -->
 <!-- ######    Main Content    ###### -->
 <!-- ################################ -->
-        <div class="main_content">
-            <div class="action_bar">
 
+        <div class="main_content">
+            <div class="action_screen">
+                <div class="action_column hero_action">
+                    <div class="hero_sprite_box">
+                        {% load static %}
+                        <img class="hero_sprite" src="{% static 'img/heroes/bear-icon.png' %}" alt="bear">
+                    </div>
+                </div>
+                <div class="action_column enemy_action">
+                    <div class="enemy_sprite_box">
+                        {% load static %}
+                        <img class="enemy_sprite" src="{% static 'img/enemies/cerberus_serious.png' %}" alt="cerberus">
+                        
+                    </div>
+                </div>
             </div>
             <div class="row action_bar enemy_bar container-fluid">
-                <div class="col-md-3">
-                    <p class="enemy_status_text"> Enemy Roll Results: </p>
+                <div class="col-md-3 status_column">
+                    <p class="enemy_status_text"> Enemy Roll: <br></p>
                 </div>
                 <div class="col-md-6 roll_results">
                     {% for enemy_atk in enemy_roll %}
-                    <div class="enemy_roll"> {{ enemy_atk }} </div>
+                        <div id="e{{forloop.counter}}" class="enemy_roll"> {{ enemy_atk }} </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-3">
-                    <p class="enemy_status_text"> Enemy HP:
+                <div class="col-md-3 status_column">
+                    <p class="enemy_status_text"> {{ enemy_name}} HP:
                     <p class="enemy_status_text text-right">{{ enemy_life }} / {{ enemy_hpb }}</p> {# Enemy HP Remaining / Enemy HP Total#}</p>
                 </div>
             </div>
             <!-- end of enemy -->
             <div class="row action_bar hero_bar container-fluid">
                 <div class="col-md-3">
-                    <p class="hero_status_text"> Hero Roll Results: </p>
+                    <p class="hero_status_text status_column"> Hero Roll: <br> </p>
                 </div> 
                 <div class="roll_results col-md-6">
-                    {% for hero_atk in hero_roll %}
-                        <div class="hero_roll"> {{ hero_atk }} </div>
+                    {% for atk in hero_roll %}
+                        <div id="h{{forloop.counter}}" class="hero_roll"> {{ atk }} </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 status_column">
                     <p class="hero_status_text"> Hero HP:
                     <p class="hero_status_text text-right">{{ hero_life }} / {{ hero_hpb }}</p> {# Hero HP Remaining / Hero HP Total#}</p>
                 </div>
             </div>
             <div class="activity_log_box">
                 <div class="col-md-6 hero_log_box" style="overflow:auto;">
-                    <p> {{ hero_log|safe }}</p> 
+                    <p id="hero_log_text"> {{ hero_log|safe }}</p> 
                 </div>
                 <div class="col-md-6 enemy_log_box" style="overflow:auto;">
-                    <p> {{ enemy_log|safe }}</p> 
+                    <p id="enemy_log_text"> {{ enemy_log|safe }}</p> 
                 </div>
             </div>
             <!-- end of log -->
@@ -187,35 +210,36 @@
 <!-- ################################ -->
 <!-- ######      Dice Bar      ###### -->
 <!-- ################################ -->
-        <div class="row container_fluid footer">
+        <div class="row container_fluid footer hero_buttons">
             <div class="col-md-6">
-                    <div class="btn-group btn-group-lg " role="group">
+                    <div class="btn-group btn-group-lg" role="group">
                         <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w1">
-                            <button type='submit' class="btn-primary hero_btn"> Weapon #1</button>
+                            <button type='submit' class="btn-primary hero_btn"> Wpn #1</button>
                         </form>
                         <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w2">
-                            <button type='submit' class="btn-success hero_btn"> Weapon #2</button>
+                            <button type='submit' class="btn-success hero_btn"> Wpn #2</button>
                         </form>
-                        <!-- <form action='/hero_roll' method='post'>
+                        <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w3">
-                            <button type='submit' class="btn-info hero_btn"> Dice #3</button>
+                            <button type='submit' class="btn-warning hero_btn"> Items </button>
                         </form>
-                        <form action='/hero_roll' method='post'>
-                            {% csrf_token %}
-                            <input type='hidden' name='hero_weapon' value="w4">
-                            <button type='submit' class="btn-warning hero_btn"> Dice #4</button>
-                        </form>
-                        <form action='/hero_roll' method='post'>
+                        <!-- <form action='/hero_roll' method='post'>
                             {% csrf_token %}
                             <input type='hidden' name='hero_weapon' value="w5">
                             <button type='submit' class="btn-success hero_btn"> Dice #5</button>
                         </form> -->
-                    </div>
+                        <form action='/hero_roll' method='post'>
+                            {% csrf_token %}
+                            <input type='hidden' name='hero_weapon' value="w4">
+                            <button type='submit' class="btn-basic hero_btn">Rest</button>
+                        </form>
+                    </div> <!-- [end] hero button group -->
+                        
             </div>
             <div class="col-md-5 flex_col_cen">
                 <form action='/enemy_roll' method='post'>
@@ -232,7 +256,8 @@
 <!-- #################################### -->
 <!-- ######   More jQuery Source   ###### -->
 <!-- #################################### -->
-    <script src="js/bootstrap.min.js"></script>
+    {% load staticfiles %}
+    <script src="{% static 'js/battle.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

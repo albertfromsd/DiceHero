@@ -28,7 +28,7 @@
 <!-- ######      Page Start    ###### -->
 <!-- ################################ -->
 <body>
-    <div class="container entire_page">
+    <div class="container-fluid entire_page">
 
 <!-- ################################ -->
 <!-- ######       Nav Bar      ###### -->
@@ -46,41 +46,41 @@
                             God Mode
                         </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item">
-                                    <form action="/god_hero">
-                                        <button class="btn-block">Create/Modify Hero</button>
-                                    </form>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_diceface">
-                                        <button class="btn-block">Create Dice Faces </button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_hero">
+                                    <button class="btn-block">God of Heroes</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_dice">
-                                        <button class="btn-block">Create Dice</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_equip">
+                                    <button class="btn-block">God of Equipment</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_weapon">
-                                        <button class="btn-block">Create Weapons</button>
-                                    </form>
-                                </a>                            
+                            <a class="dropdown-item">
+                                <form action="/god_dice">
+                                    <button class="btn-block">God of Dice</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_armor">
-                                        <button class="btn-block">Create Armor</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_diceface">
+                                    <button class="btn-block">God of Dicefaces </button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_item">
-                                        <button class="btn-block">Create Items</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_enemy">
+                                    <button class="btn-block">God of Enemies </button>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                                <form action="/god_item">
+                                    <button class="btn-block">God of Items</button>
+                                </form>
+                            </a>
                             </div>
                     </li>  <!-- [end] godmode dropdown -->
                     <li class="nav-item dropdown">
@@ -108,6 +108,14 @@
                         </div>
                     </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    
+                    <li class="nav-item">
                         <form action='/inspect_hero'>
                             {% csrf_token %}
                             <input type='hidden'>
@@ -126,8 +134,11 @@
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create<br>New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -140,211 +151,213 @@
                 </ul>
             </div>
         </nav>
+
         <!-- end of header -->
 
 <!-- ################################ -->
 <!-- ######  HERO GOD Content  ###### -->
 <!-- ################################ -->
-    <h1> Create Hero</h1>    
-    <div class="row">
-            <div class="modify_hero_box">
-                <form action='/process_god_hero' method='post' class="god_form">
-                    {% csrf_token %}
-                    <div class="input_bar">
-                        <label for="new_hero_name">Hero Name:</label>
-                        <input type="text" name="hero_name" value="name" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label for="element">Elemental Affinity</label>
-                        <input type="text" name="hero_element" value="element" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label for="hp">Base HP</label>
-                        <input type="number" name="hero_hp" value="#" class="input_text">
-                    </div>
-                    <div class="gold">
-                        <label for="new_hero_name">Gold</label>
-                        <input type="number" name="hero_gold" value="#" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label for="gems">Gems</label>
-                        <input type="number" name="hero_gems" value="#" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label>Attack: </label>
-                        <input type="number" name="hero_atk" value="#" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label>Defense: </label>
-                        <input type="number" name="hero_def" value="#" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label>Intelligence: </label>
-                        <input type="number" name="hero_int" value="#" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label>Speed: </label>
-                        <input type="number" name="hero_spd" value="#" class="input_text">
-                    </div>
-            <!-- HERO WEAPONS -->
-                    <!-- <div class="input_bar">
-                        <label>Helmet: </label>
-                        <input type="text" name="hero_god" value="atk_base" class="input_text">
-                    </div> -->
-                    <div class="input_bar">
-                        <label>Weapon 1: </label>
-                        <input type="number" name="hero_wpn1" value="wpn id#" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label>Weapon 2: </label>
-                        <input type="number" name="hero_wpn2" value="wpn id#" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label>Armor: </label>
-                        <input type="number" name="hero_armor" value="armor id#" class="input_text">
-                    </div>
-            <!-- SUBMIT BUTTON -->
-                    <div class="input_bar">
-                        <input type='hidden' name='god' value="hero">
-                        <button type='submit' class="btn btn-primary btn-block">Create Hero</button>
-                    </div>
-                </form>
+    <h1 class="text-center"> Create Hero</h1>    
+    <div class="main_content">
+        <div class="create_box">
+            <form action='/process_god_hero' method='post' class="form_box">
+                {% csrf_token %}
+                <div class="input_box">
+                    <div class="create_label_column">
+                        <div class="input_label">
+                            <label for="hero_name">Hero Name:</label>
+                        </div>
+                        <div class="input_label">
+                            <label for="hero_hp">HP:</label>
+                        </div>
+                        <div class="input_label">
+                            <label for="hero_atk">ATK:</label>
+                        </div>
+                        <div class="input_label">
+                            <label for="hero_def">DEF:</label>
+                        </div>
+                        <div class="input_label">
+                            <label for="hero_int">INT:</label>
+                        </div>
+                        <div class="input_label">
+                            <label for="hero_spd">SPD</label>
+                        </div>
+                        <div class="input_label">
+                            <label for="hero_gold">Gold:</label>
+                        </div>
+                        <div class="input_label">
+                            <label for="hero_gems">Gems:</label>
+                        </div>
+                    </div> <!-- [end] create label column -->
+                    <div class="create_stat_column">
+                        <div class="input_stats">
+                            <input type="text" name="hero_name" value="" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="hero_hp" value ="100" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="hero_atk" value="1" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="hero_def" value ="1" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="hero_int" value="1" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="hero_spd" value ="10" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="hero_gold" value="100" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="hero_gems" value ="10" class="input_text">
+                        </div>
+                    </div> <!-- [end] create stat column -->  
+                </div> <!-- [end] input box -->
+                <!-- SUBMIT BUTTON -->
+                <br>
+                <div class="create_bar">
+                    <input type='hidden' name='god_hero'>
+                    <button type='submit' class="btn btn-primary btn-block create_btn">Create Hero</button>
+                </div>
+            </form>
+        </div> <!-- [end] create box -->
+<!-- ################################## -->
+<!-- ######     New Instance     ###### -->
+<!-- ################################## -->
+        <div class="new_instance_box">
+            <h3 class="text-center">Latest Hero:</h3><br>
+            <div class="new_instance_stats">
+                <div class="label_column">
+                    <p class="label_text">
+                        Name: <br>
+                        HP: <br>
+                        ATK: <br>
+                        DEF: <br>
+                        INT: <br>
+                        SPD: <br>
+                        Gold: <br>
+                        Gems: <br>
+                    </p>
+                </div> <!-- [end] label column -->
+                <div class="stat_column">
+                    <p class="stat_text">
+                        {{ hero_name }} [ID #{{ hero_id }}]<br>
+                        {{ hero_hp }}<br>
+                        {{ hero_atk }} <br>
+                        {{ hero_def }}<br>
+                        {{ hero_int }} <br>
+                        {{ hero_spd }} <br>
+                        {{ hero_gold }} gold<br>
+                        {{ hero_gems }} gems <br>
+                </div>
+            </div> <!-- [end] new_instance_stats -->
+        </div> <!-- [end] "new_instance_box"-->
+    </div> <!-- end of main content -->
+        
 
-            </div>
-        </div>
-
-        <div class="main_content">
-        <!-- end of main content -->
-
-<!-- ##################################### -->
-<!-- ######  Messages and Database  ###### -->
-<!-- ##################################### -->
-<div class="row">
-    <p class="text creation"><span class="text-center font-weight-bold">New Hero:</span><br> 
-        Name: {{ new_hero.name }} [ID: {{ new_hero.id }}]<br>
-        Element: {{ new_hero.element }}<br>
-        Gold: {{ new_hero.gold }} <br>
-        Gems: {{ new_hero.gems }} <br>
-        HP: {{ new_hero.hp_base }} <br>
-        ATK: {{ new_hero.atk_base }} <br>
-        DEF: {{ new_hero.def_base }} <br>
-        INT: {{ new_hero.int_base }} <br>
-        SPD: {{ new_hero.spd_base }} <br>
-        Weapon #1: {{ new_hero.wpn1 }} <br>
-        Weapon #2: {{ new_hero.wpn2 }} <br>
-        Armor: {{ new_hero.armor }} <br>
-    </p>
-</div> <!-- [end] row -->
+<!-- ################################## -->
+<!-- ######       Database       ###### -->
+<!-- ################################## -->
 <div class="row database" style="overflow: auto">
     <table class="table-striped table container-fluid">
         <thead class="thead-dark">
             <tr class="text-center">
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
-                <th scope="col">Element</th>
-                <th scope="col">Gold</th>
-                <th scope="col">Gems</th>
+                <th scope="col">Level</th>
+                <th scope="col">Owner</th>
                 <th scope="col">HP</th>
                 <th scope="col">ATK</th>
                 <th scope="col">DEF</th>
                 <th scope="col">INT</th>
                 <th scope="col">SPD</th>
+                <th scope="col">Gold</th>
+                <th scope="col">Gems</th>
                 <th scope="col">Delete</th>
             </tr>
         </thead>
         {% for hero in all_heroes %}
             <tr class="text-center" scope="row">
-                <td> {{ hero.id }} </td>
-                <td> {{ hero.name }} <br>
+                <td> <br> {{ hero.id }} </td>
+                <td> {{ hero.name }} <br><br>
                     <form action="/edit_hero" method="post">
                         {% csrf_token %}
-                        <p><input type="text" placeholder="New Name" name="new_name" class="container-fluid"></p>
+                        <p><input type="text" name="new_name" class="container-fluid input_bar"></p>
                         <button type="hidden" name="edit_name" value="{{hero.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
                     </form>
                 </td>
-                <td> {{ hero.element }} <br>
+                <td> {{ hero.level }} <br><br>
                     <form action="/edit_hero" method="post">
                         {% csrf_token %}
-                        <p><input type="text" placeholder="element" name="new_element" class="container-fluid"></p>
-                        <button type="hidden" name="edit_element" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                        <p><input type="text" name="new_level" class="container-fluid input_bar"></p>
+                        <button type="hidden" name="edit_level" value="{{hero.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
                     </form>
                 </td>
-                <td> {{ hero.gold }}<br>
+                <td>[ID #{{hero.user.id }}] <br> {{ hero.user.username }} <br>
                     <form action="/edit_hero" method="post">
                         {% csrf_token %}
-                        <p><input type="number" placeholder="New #" name="new_gold" class="container-fluid"></p>
-                        <button type="hidden" name="edit_gold" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td>
-                <td> {{ hero.gems }}<br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="text" placeholder="New #" name="new_gems" class="container-fluid"></p>
-                        <button type="hidden" name="edit_gems" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td>
-                <td> {{ hero.hp_base }} <br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="number" placeholder="New #" name="new_hp" class="container-fluid"></p>
-                        <button type="hidden" name="edit_hp" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td>
-                <td> {{ hero.atk_base }} <br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="number" placeholder="New #" name="new_atk" class="container-fluid"></p>
-                        <button type="hidden" name="edit_atk" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td>
-                <td> {{ hero.def_base }} <br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="number" placeholder="def" name="new_def" class="container-fluid"></p>
-                        <button type="hidden" name="edit_def" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td>
-                <td> {{ hero.int_base }}<br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="number" placeholder="New #" name="new_int" class="container-fluid"></p>
-                        <button type="hidden" name="edit_int" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td>
-                <td> {{ hero.spd_base }}<br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="number" placeholder="New #" name="new_spd" class="container-fluid"></p>
-                        <button type="hidden" name="edit_spd" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                        <p><input type="text" placeholder="User ID#" name="new_user" class="container-fluid input_bar"></p>
+                        <button type="hidden" name="edit_user" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
                     </form>
                 </td>
 
-                <!-- <td> {{ hero.wpn1 }}<br>
+                <td> {{ hero.hp_base }} <br><br>
                     <form action="/edit_hero" method="post">
                         {% csrf_token %}
-                        <p><input type="text" placeholder="Wpn ID#" name="new_wpn1" class="container-fluid"></p>
+                        <p><input type="number" name="new_hp" class="container-fluid input_bar"></p>
+                        <button type="hidden" name="edit_hp" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                    </form>
+                </td>
+                <td> {{ hero.atk_base }} <br><br>
+                    <form action="/edit_hero" method="post">
+                        {% csrf_token %}
+                        <p><input type="number" name="new_atk" class="container-fluid  input_bar"></p>
+                        <button type="hidden" name="edit_atk" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                    </form>
+                </td>
+                <td> {{ hero.def_base }} <br><br>
+                    <form action="/edit_hero" method="post">
+                        {% csrf_token %}
+                        <p><input type="number" name="new_def" class="container-fluid  input_bar"></p>
+                        <button type="hidden" name="edit_def" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                    </form>
+                </td>
+                <td> {{ hero.int_base }}<br><br>
+                    <form action="/edit_hero" method="post">
+                        {% csrf_token %}
+                        <p><input type="number" name="new_int" class="container-fluid  input_bar"></p>
+                        <button type="hidden" name="edit_int" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                    </form>
+                </td>
+                <td> {{ hero.spd_base }}<br><br>
+                    <form action="/edit_hero" method="post">
+                        {% csrf_token %}
+                        <p><input type="number" name="new_spd" class="container-fluid  input_bar"></p>
+                        <button type="hidden" name="edit_spd" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                    </form>
+                </td>
+                <td> {{ hero.gold }}<br><br>
+                    <form action="/edit_hero" method="post">
+                        {% csrf_token %}
+                        <p><input type="number" name="new_gold" class="container-fluid input_bar"></p>
+                        <button type="hidden" name="edit_gold" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                    </form>
+                </td>
+                <td> {{ hero.gems }}<br><br>
+                    <form action="/edit_hero" method="post">
+                        {% csrf_token %}
+                        <p><input type="text" name="new_gems" class="container-fluid  input_bar"></p>
                         <button type="hidden" name="edit_gems" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
                     </form>
                 </td>
-                <td> {{ hero.wpn2 }}<br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="text" placeholder="Wpn ID#" name="new_wpn2" class="container-fluid"></p>
-                        <button type="hidden" name="edit_wpn1" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td>
-                <td> {{ hero.armor }}<br>
-                    <form action="/edit_hero" method="post">
-                        {% csrf_token %}
-                        <p><input type="text" placeholder="Armor ID#" name="new_armor" class="container-fluid"></p>
-                        <button type="hidden" name="edit_wpn2" value="{{hero.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                    </form>
-                </td> -->
-                <td>                    
+                <td><br><br>
                     <form action='/del_hero' method='post'>
                         {% csrf_token %}
-                        <input type='hidden' name='delete' value={{hero.id}}>
-                        <button type='submit'class="btn-danger">Delete</button>
+                        <input type='hidden' name='delete' value="{{hero.id}}">
+                        <button type='submit'class="btn btn-outline-danger">Delete</button>
                     </form>
                 </td>
             </tr>

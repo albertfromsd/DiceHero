@@ -63,7 +63,7 @@ class User(models.Model):
 class Hero(models.Model):
     name = models.CharField(max_length=255)
     level = models.IntegerField(MaxValueValidator(99), default=1)
-    user = models.ForeignKey(User, related_name="heroes", on_delete="CASCADE", blank=True, null=True)
+    user = models.ForeignKey(User, related_name="heroes", on_delete=models.CASCADE, blank=True, null=True)
     #inventory
     gold = models.IntegerField(MaxValueValidator(999999), default=100)
     gems = models.IntegerField(MaxValueValidator(99999), default=10)
@@ -97,7 +97,7 @@ class Hero(models.Model):
 class Weapon(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="weapons", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="weapons", on_delete=models.CASCADE, blank=True, null=True)
     level = models.IntegerField(MaxValueValidator(99), default=1)
     price = models.IntegerField(MaxValueValidator(9999), default=100)
     attack = models.IntegerField(MaxValueValidator(99), default=1)
@@ -122,8 +122,8 @@ class Weapon(models.Model):
 class WpnDice(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="wpn_dice", on_delete="CASCADE", blank=True, null=True)
-    parent_wpn = models.ForeignKey(Weapon, related_name="wpn_dice", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="wpn_dice", on_delete=models.CASCADE, blank=True, null=True)
+    parent_wpn = models.ForeignKey(Weapon, related_name="wpn_dice", on_delete=models.CASCADE, blank=True, null=True)
     level = models.IntegerField(MaxValueValidator(99), default=1)
     price = models.IntegerField(MaxValueValidator(9999), default=10)
 
@@ -146,8 +146,8 @@ class WpnDice(models.Model):
 class WpnDface(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="wpn_dfaces", on_delete="CASCADE", blank=True, null=True)
-    parent_die = models.ForeignKey(WpnDice, related_name="wpn_dfaces", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="wpn_dfaces", on_delete=models.CASCADE, blank=True, null=True)
+    parent_die = models.ForeignKey(WpnDice, related_name="wpn_dfaces", on_delete=models.CASCADE, blank=True, null=True)
     level = models.IntegerField(MaxValueValidator(99), default=1)
     price = models.IntegerField(MaxValueValidator(9999), default=10)
 
@@ -168,7 +168,7 @@ class WpnDface(models.Model):
 class Armor(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="armors", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="armors", on_delete=models.CASCADE, blank=True, null=True)
     level = models.IntegerField(MaxValueValidator(99), default=1)
     price = models.IntegerField(MaxValueValidator(9999), default=100)
     defense = models.IntegerField(MaxValueValidator(99), default=1)
@@ -192,8 +192,8 @@ class Armor(models.Model):
 class ArmorDice(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="armor_dice", on_delete="CASCADE", blank=True, null=True)
-    parent_armor = models.ForeignKey(Armor, related_name="armor_dice", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="armor_dice", on_delete=models.CASCADE, blank=True, null=True)
+    parent_armor = models.ForeignKey(Armor, related_name="armor_dice", on_delete=models.CASCADE, blank=True, null=True)
     price = models.IntegerField(MaxValueValidator(9999), default=10)
 
     def add_armor_dface(self, armor_dface):
@@ -216,8 +216,8 @@ class ArmorDice(models.Model):
 class ArmorDface(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="armor_dfaces", on_delete="CASCADE", blank=True, null=True)
-    parent_die = models.ForeignKey(ArmorDice, related_name="armor_dfaces", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="armor_dfaces", on_delete=models.CASCADE, blank=True, null=True)
+    parent_die = models.ForeignKey(ArmorDice, related_name="armor_dfaces", on_delete=models.CASCADE, blank=True, null=True)
     price = models.IntegerField(MaxValueValidator(9999), default=10)
 
     #battle
@@ -258,7 +258,7 @@ class ArmorDface(models.Model):
 class Item(models.Model):
     #info
     name = models.CharField(max_length=25)
-    owner = models.ForeignKey(Hero, related_name="items", on_delete="CASCADE", blank=True, null=True)
+    owner = models.ForeignKey(Hero, related_name="items", on_delete=models.CASCADE, blank=True, null=True)
     price = models.IntegerField(MaxValueValidator(9999), default=100)
 
     #I.e. Heal: 100

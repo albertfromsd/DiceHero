@@ -1,0 +1,269 @@
+* {
+    vertical-align: baseline;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    border: 0 none;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+}
+
+*{
+    margin: 0px auto;
+    /* border: 1px solid red; */
+}
+
+.fill_parent {
+    width: 98%;
+    height: 98%;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+.text-gray {
+    color: gray;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-green {
+    color: lightgreen;
+}
+
+.text-red {
+    color: red;
+}
+
+.text-yellow {
+    color: yellow;
+}
+
+.text-purple {
+    color: rgb(245, 60, 245);
+}
+
+.text-blue {
+    color: rgb(135, 135, 225);
+}
+
+.text-skyblue {
+    color: skyblue;
+}
+
+.flex-row {
+    flex-flow: row;
+}
+
+.flex-col {
+    flex-flow: column;
+}
+
+.hidden {
+    display: none;
+}
+
+.button_row {
+    width: 100%;
+}
+
+.entire_page {
+    width: 900px;
+    height: 1300px;
+    background-color: #1C161A;
+
+}
+
+.nav_border {
+    border: 1px solid darkslategrey;
+}
+
+.nav_button {
+    border: 1px solid #6C757D;
+}
+
+
+body {
+    background-color: #1C161A;
+}
+.main_content {
+    width: 100%;
+    height: 70%;
+    border: 1px solid black;
+}
+
+.hero_info {
+    width: 100%;
+    height: 30%;
+}
+
+.hero_caption {
+    height: 7%;
+    width: 100%;
+    caption-side: top;
+    font-size: 18px;
+    border-bottom: 1px solid white;
+    color: white;
+    text-align: center;
+}
+
+.thin_row {
+    height: 15%;
+}
+
+.hero_stats {
+    color: white;
+    font-size: 16px;
+    border: 1px double white;
+    border-width: 4px;
+}
+
+.hero_equipment {
+    border: 1px solid white;
+    padding: 10px;
+}
+
+.equip_head {
+    border-bottom: 1px solid white;
+    padding: 5px;
+    padding-bottom: 10px;
+}
+
+.table_caption {
+    background-color: rgb(57, 50, 50);
+    color: white;
+    height: 10%;
+    font-size: 18px;
+    font-weight: bold;
+    caption-side: top;
+    text-align: center;
+
+}
+
+.wpn_details {
+    margin: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+    border: 1px double white;
+    border-width: 4px;
+}
+
+.equip_stat_line {
+    margin-bottom: 10px;
+}
+
+.dice_details {
+    margin: 0px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid red;
+}
+
+.database {
+    width: 100%;
+}
+
+.button-padding {
+    padding: 10px;
+}
+
+.upgrade_row {
+    height: 20%;
+}
+
+.stat_box {
+    width: 150px;
+    height: 150px;
+    background-color: #1C161A;
+    border: 1px solid white;
+}
+
+.item_box {
+    width: 145px;
+    height: 145px;
+    background-color: #1C161A;
+    border: 1px solid white;
+}
+
+.gem_box {
+    width: 100%;
+}
+
+.bg-black {
+    background-color: #1C161A;
+}
+
+.gem_image {
+    width: 100%;
+}
+
+.desc_row {
+    height: 8%;
+}
+
+.equip_desc_row {
+    height: 25%;
+}
+
+.item_desc {
+    width: 17%;
+    display: flex;
+    flex-flow: column;
+}
+
+.desc_text {
+    width: 100%;
+    font-size: 15px;;
+}
+
+/* Modal */
+
+.bg-modal {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    margin: 0px;
+    padding: 0px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-confirm {
+    width: 350px;
+    height: 150px;
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 4px;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    position: relative;
+}
+
+.modal-btn {
+    padding: 6px;
+    position: relative;
+}
+
+.close {
+    color: white;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    transform: rotate(45deg);
+    cursor: pointer;
+}

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Shop</title>
+    <title>Equipment Shop</title>
     <!-- ### BOOTSTRAP SOURCING ### -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/shop_css.css' %}">
+    <link rel="stylesheet" href="{% static 'css/inventory_css.css' %}">
 
     <!-- ### JQUERY SCRIPTS ### -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -42,41 +42,41 @@
                             God Mode
                         </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item">
-                                    <form action="/god_hero">
-                                        <button class="btn-block">Create/Modify Hero</button>
-                                    </form>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_diceface">
-                                        <button class="btn-block">Create Dice Faces </button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_hero">
+                                    <button class="btn-block">God of Heroes</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_dice">
-                                        <button class="btn-block">Create Dice</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_equip">
+                                    <button class="btn-block">God of Equipment</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_weapon">
-                                        <button class="btn-block">Create Weapons</button>
-                                    </form>
-                                </a>                            
+                            <a class="dropdown-item">
+                                <form action="/god_dice">
+                                    <button class="btn-block">God of Dice</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_armor">
-                                        <button class="btn-block">Create Armor</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_diceface">
+                                    <button class="btn-block">God of Dicefaces </button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_item">
-                                        <button class="btn-block">Create Items</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_enemy">
+                                    <button class="btn-block">God of Enemies </button>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                                <form action="/god_item">
+                                    <button class="btn-block">God of Items</button>
+                                </form>
+                            </a>
                             </div>
                     </li>  <!-- [end] godmode dropdown -->
                     <li class="nav-item dropdown">
@@ -104,6 +104,14 @@
                         </div>
                     </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    
+                    <li class="nav-item">
                         <form action='/inspect_hero'>
                             {% csrf_token %}
                             <input type='hidden'>
@@ -122,8 +130,11 @@
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create<br>New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -142,27 +153,261 @@
 <!-- #####     Main Shop    ##### -->
 <!-- ############################ -->
         <div class="main_content">
-            <h1 class="text-center">Shop</h1>
-            <h3 class="text-center"> You have {{ hero.gold }} gold to spend here!</h3>
+            <h1 class="text-center text-white">Equipment Shop</h1>
+            <h3 class="text-center text-white"> You have <span class="text-yellow">{{ hero.gold }} gold </span> to spend here!</h3>
             <div class="row hero_info">
-                <div class="col-md-3 hero_stats">
-                    <ul>
-                        <li> {{hero.name}} [ID #{{hero.id}}]</li>
-                        <li> Level: {{hero.level}} </li>
-                        <li> HP:  {{hero.hp_base}} </li>
-                        <li> ATK: {{hero.atk_base}} </li>
-                        <li> DEF: {{hero.def_base}} </li>
-                        <li> INT: {{hero.int_base}} </li>
-                        <li> SPD: {{hero.spd_base}} </li>
-                    </ul>
+                <div class="col-md-4 hero_stats text-white">
+                    <table class="table-striped container-fluid">
+                        <caption class="hero_caption"> [ID #{{hero.id}}] {{hero.name}} </caption>
+                        <thead class="thead-dark">
+                        <tr class="text-center thin_row" style="border-bottom: .5px dotted white;">
+                            <th scope="col"></th>
+                            <th scope="col">Base</th>
+                            <th scope="col">Boosts</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                        </thead>
+                        <tr class="text-center data text-white" scope="row">
+                            <td class="text-right text-white"> Level: </td>
+                            <td class="text-yellow text-center"> {{ hero.level }}</td>
+                            <td class="text-skyblue text-center"> ++</td>
+                            <td class="text-green text-center"> ### </td>
+                        </tr>
+                        <tr class="text-center data text-white" scope="row">
+                            <td class="text-right"> HP: </td>
+                            <td class="text-yellow text-center"> {{ hero.hp_base }}</td>
+                            <td class="text-skyblue text-center"> ++</td>
+                            <td class="text-green text-center"> ### </td>
+                        </tr>
+                        <tr class="text-center data text-white" scope="row">
+                            <td class="text-right"> ATK: </td>
+                            <td class="text-yellow text-center"> {{ hero.atk_base }}</td>
+                            <td class="text-skyblue text-center"> ++</td>
+                            <td class="text-green text-center"> ### </td>
+                        </tr>
+                        <tr class="text-center data text-white" scope="row">
+                            <td class="text-right"> DEF: </td>
+                            <td class="text-yellow text-center"> {{ hero.def_base }}</td>
+                            <td class="text-skyblue text-center"> ++</td>
+                            <td class="text-green text-center"> ### </td>
+                        </tr>
+                        <tr class="text-center data text-white" scope="row">
+                            <td class="text-right"> INT: </td>
+                            <td class="text-yellow text-center"> {{ hero.int_base }}</td>
+                            <td class="text-skyblue text-center"> ++ </td>
+                            <td class="text-green text-center"> ### </td>
+                        </tr>
+                        <tr class="text-center data text-white" scope="row">
+                            <td class="text-right"> SPD: </td>
+                            <td class="text-yellow text-center"> {{ hero.spd_base }}</td>
+                            <td class="text-skyblue text-center"> ++ </td>
+                            <td class="text-green text-center"> ### </td>
+                        </tr>
+                    </table>
                 </div> <!-- [end] hero stat column -->
                 <div class="col-md-3 hero_equipment">
+                    <h6 class="text-center text-white equip_head"> Equipped <br>Weapons</h6>
                     <ul>
-                        <li> {{ hero.weapons.all }}</li>
-                        <li> {{ hero.armors.all }}</li>
+                        {% for weapon in hero_weapons %}
+                        <li id="Wpn{{weapon.id}}" style="list-style-type:none"><button class="btn-block bg-black btn-dark text-red wpn_click" name="weapon_stats" value="{{weapon.id}}">[ID #{{ weapon.id }}] {{ weapon.name }} </button></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-3 hero_equipment text-white">
+                    <h6 class="text-center text-white equip_head">Equipped <br>Armor</h6>
+                    <ul>
+                        {% for armor in hero_armors %}
+                        <li id="Armor{{armor.id}}" style="list-style-type:none"> <button class="btn-block bg-black btn-dark text-red armor_click" name="armor_stats" value="{{armor.id}}">[ID #{{ armor.id }}] {{ armor.name }} </button></li>
+                        {% endfor %}
                     </ul>
                 </div> <!-- [end] hero equipment column -->
             </div> <!-- [end] row hero info -->
+            <br>
+<!-- ######################### -->
+<!-- ######   WEAPONS   ###### -->
+<!-- ######################### -->
+            <div class="row upgrade_row">
+                <div class="col-sm flex-center flex-row">
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="hp_up" value="10" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/jagged_sword.png' %}" alt="jagged sword">
+                            </button>
+                        </form>
+                    </div>   
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="atk_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/sword_blue_simple.png' %}" alt="simple blue sword">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="def_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/plain_axe.png' %}" alt="def_gem">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="int_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/stone_hammer1.png' %}" alt="stone hammer 1">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="spd_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/dark_mace.png' %}" alt="dark mace">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- [end] upgrade row weapon pictures -->
+            <br>
+            <div class="row equip_desc_row">
+                <div class="col-sm flex-center flex-row" style="margin-top:8px">
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Jagged Sword</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Simple Sword</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Plain Axe</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Stone Hammer</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Dark Mace</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- [end] upgrade row weapon description -->
+<!-- ######################### -->
+<!-- ######    ARMOR    ###### -->
+<!-- ######################### -->
+            <div class="row upgrade_row">
+                <div class="col-sm flex-center flex-row">
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="spd_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/armor_plain.png' %}" alt="plain_armor">
+                            </button>
+                        </form>
+                    </div>   
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="atk_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/armor_leather_plain.png' %}" alt="plain leather armor">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="def_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/chain_mail_plain.png' %}" alt="plain chain mail">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="int_up" value="1" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/mage_robe_blue.png' %}" alt="blue mage robes">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="item_box">
+                        <form action="/process_levelup" method="post" class="fill_parent">
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit' name="hp_up" value="10" class="btn-block  bg-black">
+                                {% load static %}
+                                <img class="fill_parent" src="{% static 'img/equip/armor_blue.png' %}" alt="blue_armor">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- [end] upgrade row armor pictures -->
+            <br>
+            <div class="row equip_desc_row">
+                <div class="col-sm flex-center flex-row" style="margin-top:8px">
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Jagged Sword</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Simple Sword</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Plain Axe</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Stone Hammer</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                    <div class="item_desc">
+                        <h6 class="text-white text-center">Dark Mace</h6>
+                        <ul style="list-style-type: none;" class="text-white">
+                            <li> Stat Boosts Here</li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- [end] upgrade row armor description -->
+            <h6 class = "text-center text-red"> <br> {{ too_poor }}</h6>
             <div class="row weapons">
 
             </div><!-- [end] weapons -->
@@ -183,7 +428,8 @@
         </div> <!-- [end] of row -->
     </div>
     <!-- [end] of entire page     -->
-    <script src="js/bootstrap.min.js"></script>
+    {% load staticfiles %}
+    <script src="{% static 'js/inventory.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

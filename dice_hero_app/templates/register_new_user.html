@@ -23,7 +23,7 @@
             </ul>
     </div> <!-- end of message_box -->
         <!-- end of header -->
-        <div class="main_content">
+        <div class="registration_body">
             <div class="create_hero_box">
                 <form action='/process_registration' method='post' class="create_hero_box">
                     {% csrf_token %}
@@ -48,18 +48,14 @@
                         <button type='submit' class="btn btn-primary">Register</button>
                     </div>
                 </form>
-                <div class="create_button">
-                    <form action="/user_login">
-                        <input type='hidden' name='reset' value="logout">
-                        <button type='submit' class="btn btn-warning">Return to Login</button>
-                    </form>
-                </div>
-
             </div> <!-- end of create user box -->
+            <div class="register_button">
+                <form action="/user_login">
+                    <input type='hidden' name='reset' value="logout">
+                    <button type='submit' class="btn btn-warning">Return to Login</button>
+                </form>
+            </div>
         </div> <!-- end of main content -->
-        <div class="footer">
-
-        </div>
         <!-- end of footer -->
     </div>
     <!-- end of entire page     -->

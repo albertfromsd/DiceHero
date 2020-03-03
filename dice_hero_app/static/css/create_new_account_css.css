@@ -26,9 +26,18 @@
 .flow-column {
     flex-flow: column;
 }
+
+.full-width {
+    width: 100%;
+}
+
 .entire_page {
     width: 920px;
     height: 1150px;
+}
+
+.block {
+    display:block;
 }
 
 .header {
@@ -68,9 +77,17 @@
     height: 50%;
 }
 
+.registration_body {
+    width: 100%;
+    height: 35%;
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+}
+
 .create_hero_box {
     width: 100%;
-    height: 65%;
+    height: 30%;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -82,6 +99,12 @@
     justify-content: space-between;
     flex-flow: row;
     margin-top: 7px;
+}
+
+.radio_box {
+    width: 40%;
+    display: flex;
+
 }
 
 label {
@@ -103,9 +126,13 @@ label {
 
 .create_button {
     width: 8.5%;
-    margin-top: 25px;
+    margin-top: 19px;
     display: flex;
     justify-content: center;
+}
+
+.register_button {
+    margin-top: 60px;
 }
 
 .text_bar {

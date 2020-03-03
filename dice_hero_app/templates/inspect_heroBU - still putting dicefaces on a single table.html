@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Inspect Hero</title>
+    <!-- ### BOOTSTRAP SOURCING ### -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/inventory_css.css' %}">
+
+    <!-- ### JQUERY SCRIPTS ### -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log("I'm ready!");
+            var equipment = "{{equipment}}";
+            var dice = "{{dice}}";
+            var faces = "{{faces}}";
+            console.log(equipment);
+            console.log(dice);
+            console.log(faces);
+
+        });
+        // end of document.ready
+        $(document).on('eventlistener', 'class_id_selector', function() {
+            console.log("Document is on, too!")
+        });
+        // end of document.on
+    </script>
+</head>
+<body>
+    <div class="container-fluid entire_page">
+<!-- ####################### -->
+<!-- #####   Nav Bar   ##### -->
+<!-- ####################### -->
+        <nav class="navbar navbar-expand navbar-dark bg-dark md-light container-fluid">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            God Mode
+                        </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item">
+                                    <form action="/god_hero">
+                                        <button class="btn-block">Create/Modify Hero</button>
+                                    </form>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/god_diceface">
+                                        <button class="btn-block">Create Dice Faces </button>
+                                    </form>
+                                </a>
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/god_dice">
+                                        <button class="btn-block">Create Dice</button>
+                                    </form>
+                                </a>
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/god_equip">
+                                        <button class="btn-block">Create Equipment</button>
+                                    </form>
+                                </a>                            
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/god_item">
+                                        <button class="btn-block">Create Items</button>
+                                    </form>
+                                </a>
+                            </div>
+                    </li>  <!-- [end] godmode dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Shops
+                        </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item">
+                                    <form action="/equipment_shop">
+                                        <button class="btn-block">Equipment</button>
+                                    </form>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/dice_shop">
+                                        <button class="btn-block">Dice and Dicefaces </button>
+                                    </form>
+                                </a>
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">
+                                    <form action="/levelup">
+                                        <button class="btn-block">Increase Stats</button>
+                                    </form>
+                                </a>
+                        </div>
+                    </li>  <!-- [end] of Shops -->
+                    <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action='/inspect_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Hero</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">{{ hero_name }} <br>[ID: {{ hero_id }}]         </a>
+                    </li>
+                    <li class="nav-item">
+                        <form action='/dice_reset' method='post'>
+                            {% csrf_token %}
+                            <input type='hidden' name='reset' value="reset">
+                            <button type='submit'class="nav-link bg-dark md-light">Reset</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/create_hero">
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action='/dice_reset' method="post">
+                            {% csrf_token %}
+                            <input type='hidden' name='reset' value="logout">
+                            <button type='submit' class="nav-link bg-dark md-light">Logout</button>
+                        </form>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+        <!-- end of header -->
+
+<!-- ############################ -->
+<!-- #####   INSPECT HERO   ##### -->
+<!-- ############################ -->
+        <div class="main_content">
+            <h1 class="text-center text-white">Hero Stats and Equipment</h1>
+            <h3 class="text-center text-white"> You have <span class="text-yellow">{{ hero.gold }} </span>gold and <span class="text-blue">{{ hero.gems }}</span> gems</h3>
+            <div class="row hero_info" style="overflow: auto">
+                <div class="col-md-3 hero_stats text-white">
+                    <ul style="list-style-type:none">
+                        <li> {{hero.name}} [ID #{{hero.id}}]</li>
+                        <li> Level: {{hero.level}} </li>
+                        <li> HP:  {{hero.hp_base}} </li>
+                        <li> ATK: {{hero.atk_base}} </li>
+                        <li> DEF: {{hero.def_base}} </li>
+                        <li> INT: {{hero.int_base}} </li>
+                        <li> SPD: {{hero.spd_base}} </li>
+                    </ul>
+                </div> <!-- [end] hero stat column -->
+                <div class="col-md-4 hero_equipment">
+                    <h6 class="text-center text-white"> Equipped <br>Weapons</h6>
+                    <ul>
+                    {% for weapon in hero_weapons %}
+                        <li id="wpn{{weapon.id}}" style="list-style-type:none">
+                            <form action="process_inspect_hero" method="post">
+                                {% csrf_token %}
+                                <button class="btn-block bg-black btn-dark text-red wpn_click" name="weaponid" value="{{weapon.id}}">[ID #{{ weapon.id }}] {{ weapon.name }} </button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-4 hero_equipment text-white">
+                    <h6 class="text-center">Equipped <br>Armor</h6>
+                    <ul>
+                        {% for armor in hero_armors %}
+                        <li id="armor{{armor.id}}" style="list-style-type:none"> 
+                            <form action="/process_inspect_hero" method="post">
+                                {% csrf_token %}
+                                <button class="btn-block bg-black btn-dark text-red armor_click" name="armorid" value="{{armor.id}}">[ID #{{ armor.id }}] {{ armor.name }} </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div> <!-- [end] hero equipment column -->
+            </div> <!-- [end] row hero info -->
+            <br>
+            <div class="row wpn_details">
+                <div class="row database" style="overflow: auto">
+                    <table class="table-striped table container-fluid">
+                        <caption class="table_caption"> {{ equipment.name }} </caption>
+                        <thead class="thead-dark">
+                        <tr class="text-center text-white">
+                            <th scope="col">ID</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">HP Boost</th>
+                            <th scope="col">ATK Boost</th>
+                            <th scope="col">DEF Boost</th>
+                            <th scope="col">INT Boost</th>
+                            <th scope="col">SPD Boost</th>
+                            <th scope="col"># of Slots</th>
+                        </tr>
+                        </thead>
+                        <tr class="text-center data text-white" scope="row">
+                            <td> {{ equipment.id }} </td>
+                            <td> {{ equipment.price }} </td>
+                            <td> {{ equipment.hp_boost}} </td>
+                            <td> {{ equipment.atk_boost}} </td>
+                            <td> {{ equipment.def_boost}} </td>
+                            <td> {{ equipment.int_boost}} </td>
+                            <td> {{ equipment.def_boost}} </td>
+                            <td> {{ equipment.slots }} </td>
+                        </tr>
+                    </table>
+                </div> <!-- [end] equipment table -->
+                <div class="row database" style="overflow: auto">
+                    <div class="col-sm">
+                        <table class="table-striped table container-fluid">
+                            <caption class="table_caption"> Attached Dice </caption>
+                            <thead class="thead-dark">
+                                <tr class="text-center text-white">
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">View Faces</th>
+                                    <th scope="col">Face 1</th>
+                                    <th scope="col">Face 2</th>
+                                    <th scope="col">Face 3</th>
+                                    <th scope="col">Face 4</th>
+                                    <th scope="col">Face 5</th>
+                                    <th scope="col">Face 6</th>
+                                </tr>
+                            </thead>
+                            {% for die in dice %}
+                                <tr class="text-center data text-white" scope="row"> 
+                                    <td>{{ die.id }} </td>
+                                    <td>{{ die.name }} </td>
+                                    <td>{{ die.price }}</td>
+                                    <td>{{ die.id }}
+                                        <form action="/process_inspect_hero" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden">
+                                        <button class="btn btn-outline-danger" name="viewdice" value= "{{die.id}}"> View </button>
+                                        </form>
+                                    </td>
+                                {% for rv in dicetoview %}
+                                    <td>{{ rv.roll_value }}</td>
+                                {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <!-- [end] of weapon dice column -->
+                </div><!-- [end] dice data -->
+            </div> <!-- [end] weapon details -->
+            <div class="row equip_data hidden">
+
+            </div><!-- [end] armor -->
+            <div class="row items">
+
+            </div><!-- [end] weapons -->
+        </div>
+        <!-- [end] of main content -->
+
+<!-- ######################## -->
+<!-- #####   FOOTER     ##### -->
+<!-- ######################## -->
+        <div class="row container_fluid footer">
+            
+        </div> <!-- [end] of row -->
+    </div>
+    <!-- [end] of entire page     -->
+    {% load staticfiles %}
+    <script src="{% static 'js/inventory.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

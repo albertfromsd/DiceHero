@@ -26,9 +26,18 @@
 .flow-column {
     flex-flow: column;
 }
+
+.full-width {
+    width: 100%;
+}
+
 .entire_page {
     width: 920px;
     height: 1150px;
+}
+
+.block {
+    display:block;
 }
 
 .header {
@@ -82,6 +91,12 @@
     justify-content: space-between;
     flex-flow: row;
     margin-top: 7px;
+}
+
+.radio_box {
+    width: 40%;
+    display: flex;
+
 }
 
 label {

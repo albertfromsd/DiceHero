@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'mathfilters',
+    'battle_system',
+    'hero_mgr',
     'dice_hero_app',
     'django.contrib.admin',
     'django.contrib.auth',

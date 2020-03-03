@@ -52,41 +52,41 @@
                             God Mode
                         </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item">
-                                    <form action="/god_hero">
-                                        <button class="btn-block">Create/Modify Hero</button>
-                                    </form>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_diceface">
-                                        <button class="btn-block">Create Dice Faces </button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_hero">
+                                    <button class="btn-block">God of Heroes</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_dice">
-                                        <button class="btn-block">Create Dice</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_equip">
+                                    <button class="btn-block">God of Equipment</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_weapon">
-                                        <button class="btn-block">Create Weapons</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_dice">
+                                    <button class="btn-block">God of Dice</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_armor">
-                                        <button class="btn-block">Create Armor</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_diceface">
+                                    <button class="btn-block">God of Dicefaces </button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_item">
-                                        <button class="btn-block">Create Items</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_enemy">
+                                    <button class="btn-block">God of Enemies </button>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                                <form action="/god_item">
+                                    <button class="btn-block">God of Items</button>
+                                </form>
+                            </a>
                             </div>
                     </li>  <!-- [end] godmode dropdown -->
                     <li class="nav-item dropdown">
@@ -114,6 +114,14 @@
                         </div>
                     </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    
+                    <li class="nav-item">
                         <form action='/inspect_hero'>
                             {% csrf_token %}
                             <input type='hidden'>
@@ -121,7 +129,7 @@
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">{{ hero_name }} <br>[ID: {{ hero_id }}]</a>
+                        <a class="nav-link disabled" href="#">{{ hero_name }} <br>[ID: {{ hero_id }}]         </a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method='post'>
@@ -132,11 +140,11 @@
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create<br>New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Logged in as:<br>{{ username }} [ID: {{ userid }}]</a>
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -186,38 +194,29 @@
                             <input type="text" name="df_ability" value="ability" class="input_text">
                         </div> -->
                     </div> <!-- [end] create label column -->
-                <div class="create_stat_column">
-                    <div class="input_stats">
-                        <input type="text" name="df_name" value="" class="input_text">
-                    </div>
-                    <div class="radio_box">
-                        <label class="radio_bar">
-                            <input type="radio" name="df_type" value="WpnDface" style="margin-left: 20px">Weapon
-                        </label>
-                        <label class="radio_bar">
-                            <input type="radio" name="df_type" value="ArmorDface">Armor
-                        </label>
-                    </div>
-                    <div class="input_stats">
-                        <input type="text" name="df_element" value="None" class="input_text">
-                    </div>
-                    <div class="input_stats">
-                        <input type="number" name="df_price" value ="10" class="input_text">
-                    </div>
-                    <div class="input_stats">
-                        <input type="number" name="df_roll_value" value="1" class="input_text">
-                    </div>
-    
-                    <!-- <div class="input_bar">
-                        <label for="mod_diceface_critical">Critical?</label>
-                        <input type="text" name="df_critical" value="critical" class="input_text">
-                    </div>
-                    <div class="input_bar">
-                        <label for="mod_diceface_ability">Ability</label>
-                        <input type="text" name="df_ability" value="ability" class="input_text">
-                    </div> -->
-            </div> <!-- [end] enter stat column -->  
-        </div> <!-- [end] input box -->
+                    <div class="create_stat_column">
+                        <div class="input_stats">
+                            <input type="text" name="df_name" value="" class="input_text">
+                        </div>
+                        <div class="radio_box">
+                            <label class="radio_bar">
+                                <input type="radio" name="df_type" value="WpnDface" style="margin-left: 20px">Weapon
+                            </label>
+                            <label class="radio_bar">
+                                <input type="radio" name="df_type" value="ArmorDface">Armor
+                            </label>
+                        </div>
+                        <div class="input_stats">
+                            <input type="text" name="df_element" value="None" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="df_price" value ="10" class="input_text">
+                        </div>
+                        <div class="input_stats">
+                            <input type="number" name="df_roll_value" value="1" class="input_text">
+                        </div>
+                    </div> <!-- [end] create stat column -->  
+                </div> <!-- [end] input box -->
                 <!-- SUBMIT BUTTON -->
                 <br>
                 <div class="create_bar">
@@ -225,8 +224,20 @@
                     <button type='submit' class="btn btn-primary btn-block create_btn">Create Diceface</button>
                 </div>
             </form>
+            <div class="easy_create_bar btn-group btn-group-sm text-center" role="group">
+                <form action="/basic_wpndfaces">
+                    {% csrf_token %}
+                    <input type='hidden' name='basic'>
+                    <button type='submit' class="btn btn-link basic_btn">Basic WpnDfaces</button>
+                </form>
+                <form action="/basic_armordfaces">
+                    {% csrf_token %}
+                    <input type='hidden' name='basic'>
+                    <button type='submit' class="btn btn-link basic_btn">Basic ArmorDfaces</button>
+                </form>
+            </div>
 
-            </div> <!-- [end] create box -->
+        </div> <!-- [end] create box -->
 <!-- #################################### -->
 <!-- ######   New Creation Stats   ###### -->
 <!-- #################################### -->       

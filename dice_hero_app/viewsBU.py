@@ -99,27 +99,16 @@ def process_create_hero(request):
     userid=request.session["userid"]
     user=User.objects.get(id=userid)
     hero_name=request.POST["hero_name"]
-    hp_base=int(request.POST["hp_base"])
-    atk_base=int(request.POST["atk_base"])
-    def_base=int(request.POST["def_base"])
-    int_base=int(request.POST["int_base"])
-    spd_base=int(request.POST["spd_base"])
+
 
     #### CREATE ####
-    Hero.objects.create(name=hero_name, user=user, hp_base=hp_base, atk_base=atk_base, def_base=def_base, int_base=int_base, spd_base=spd_base)
+    Hero.objects.create(name=hero_name, user=user)
 
     #### NEW HERO STATS ####
     request.session["hero_name"]=Hero.objects.last().name
     request.session["hero_id"]=Hero.objects.last().id
-    request.session["hero_hp"]=Hero.objects.last().hp_base
-    request.session["hero_atk"]=Hero.objects.last().atk_base
-    request.session["hero_def"]=Hero.objects.last().def_base
-    request.session["hero_int"]=Hero.objects.last().int_base
-    request.session["hero_spd"]=Hero.objects.last().spd_base
-    request.session["hero_gold"]=Hero.objects.last().gold
-    request.session["hero_gems"]=Hero.objects.last().gems
 
-    return redirect("/hero_created")
+    return redirect("/levelup")
 
 
 ####################################
@@ -265,11 +254,11 @@ def dice_hero(request):
 # run a for loop depending on number of dice slots/rolls
 # NOT for the number of sides on a die
     if "enemy_roll" not in request.session:
-        request.session["enemy_roll"]=[0, 0, 0, 0, 0, 0]
+        request.session["enemy_roll"]=[]
     if "enemy_attack" not in request.session:
         request.session["enemy_attack"]=0
     if "hero_roll" not in request.session:
-        request.session["hero_roll"]=[0, 0, 0, 0, 0, 0]
+        request.session["hero_roll"]=[]
     if "hero_attack" not in request.session:
         request.session["hero_attack"]=0
 
@@ -303,6 +292,9 @@ def dice_hero(request):
         "hero_name": hero_name,
         "hero_id": hero_id,
 
+        #dice_index
+        # "die_index": ???,
+
         #enemy variables
         "enemy_life": enemy_life - hero_attack,
         "enemy_hpb": enemy_hpb,
@@ -327,6 +319,8 @@ def dice_hero(request):
 
     request.session["enemy_attack"]=0
     request.session["hero_attack"]=0
+    request.session["enemy_roll"]=[]
+    request.session["hero_roll"]=[]
     
     return render(request, "dice_hero_index.html", context)
 
@@ -343,11 +337,12 @@ def enemy_roll(request):
     enemy_dice = [1, 1, 2, 2, 2, 3]
     request.session["enemy_attack"]=0
     request.session["hero_attack"]=0
-    request.session["hero_roll"]=[0, 0, 0, 0, 0, 0]
+    request.session["hero_roll"]=[]
     for i in range(0, len(enemy_dice), 1):
         num=random.randint(0, 5)
-        request.session["enemy_roll"][i]=enemy_dice[num]
+        request.session["enemy_roll"].insert(i, enemy_dice[num])
         request.session["enemy_attack"]+=request.session["enemy_roll"][i]
+        request.session[i+1]=i+1
     request.session["enemy_log"].insert(0, "Enemy attacks for "+str(request.session["enemy_attack"])+ "!")
     print(request.session["enemy_roll"])
     print(request.session["enemy_attack"])
@@ -362,24 +357,110 @@ def hero_roll(request):
     print("Post: " + str(request.POST))
     print("Session: " + str(request.session))
 
+    # hero=Hero.objects.get(id=request.session["userid"])
+    # wpn1=hero.weapons.first()
+    # wpn2=hero.weapons.last()
+    # wpn1_dice=wpn1.wpn_dice.all()
+    # wpn2_dice=wpn2.wpn_dice.all()
+
 # run a for loop depending on number of dice slots/rolls
 # NOT for the number of sides on a die
     if request.POST["hero_weapon"]=="w1":
+        # hero_dice=Hero.objects.get(id=request.session["userid"]).weapons.first.first.roll_value
         hero_dice=[0, 1, 2, 2, 2, 4]
     if request.POST["hero_weapon"]=="w2":
         hero_dice=[0, 0, 0, 4, 4, 4]
     request.session["enemy_attack"]=0
-    request.session["enemy_roll"]=[0, 0, 0, 0, 0, 0]
+    request.session["enemy_roll"]=[]
     request.session["hero_attack"]=0
     for i in range(0, len(hero_dice), 1):
         num=random.randint(0, 5)
-        request.session["hero_roll"][i]=hero_dice[num]
+        request.session["hero_roll"].insert(i, hero_dice[num])
         request.session["hero_attack"]+=request.session["hero_roll"][i]
+        request.session[i+1]=i+1
+
     request.session["hero_log"].insert(0, "Hero attacks for "+str(request.session["hero_attack"])+ "!")
     print(request.session["hero_roll"])
     print(request.session["hero_attack"])
     request.session.save()
     return redirect("/dice_hero")
+
+
+####################################
+#####       HERO MANAGER       #####
+####################################
+
+def inspect_hero(request):
+    hero_id=request.session["hero_id"]
+    hero=Hero.objects.get(id=hero_id)
+    hero_name=Hero.objects.get(id=hero_id).name
+    userid=request.session["userid"]
+    username=request.session["username"]
+    hero_weapons = Hero.objects.get(id=hero_id).weapons.all()
+    hero_armors = Hero.objects.get(id=hero_id).armors.all()
+
+    ### INSPECT SPECIFIC EQUIPMENT ###
+    dice=" "
+    faces=" "
+    equipment=" "
+    dicetoview=" "
+    if "weaponid" in request.session:
+        equipment=Weapon.objects.get(id=request.session["weaponid"])
+        dice=WpnDice.objects.filter(parent_id=request.session["weaponid"])
+        if "viewdice" in request.session:
+            dicetoview=WpnDice.objects.get(id=request.session["viewdice"]).wpn_dfaces.all()
+            print(equipment)
+            print(dicetoview)
+   
+    if "armorid" in request.session:
+        equipment=Armor.objects.get(id=request.session["armorid"])
+        dice = ArmorDice.objects.filter(parent_id=request.session["armorid"])
+        if "viewdice" in request.session:
+            dicetoview=ArmorDice.objects.get(id=request.session["viewdice"]).armor_dfaces.all()
+
+    context = {
+        "hero_id": hero_id,
+        "hero_name": hero_name,
+        "userid": userid,
+        "username": username,
+        "hero": hero,
+        "hero_weapons": hero.weapons.all(),
+        "hero_armors": hero.armors.all(),
+        "equipment": equipment,
+        "weapon": hero_weapons,
+        "armor": hero_armors,
+        "dice": dice,
+        "dicetoview": dicetoview,
+    }
+
+    
+    
+    
+    return render(request, "inspect_hero.html", context)
+
+def process_inspect_hero(request):
+    print(request.POST)
+    if "weaponid" in request.POST:
+        if "armorid" in request.session:
+            del request.session["armorid"]
+        request.session["weaponid"] = request.POST["weaponid"]
+    
+    if "armorid" in request.POST:
+        if "weaponid" in request.session:
+            del request.session["weaponid"]
+        request.session["armorid"] = request.POST["armorid"]
+
+    if "viewdice" in request.POST:
+        request.session["viewdice"] = request.POST["viewdice"]
+
+
+    return redirect("/inspect_hero")
+
+def inventory(request):
+    pass
+
+def process_inventory(request):
+    pass
 
 
 ####################################
@@ -390,7 +471,10 @@ def god_hero(request):
     print("Session: " + str(request.session))
 
     if "new_hero_id" in request.session:
-        new_hero_id=request.session["new_hero_id"]=Hero.objects.last().id
+        new_hero=Hero.objects.get(id=request.session["new_hero_id"])
+    else:
+        new_hero=Hero.objects.last()
+
 
     userid=request.session["userid"]
     username=request.session["username"]
@@ -399,10 +483,39 @@ def god_hero(request):
         "userid": userid,
         "username": username,
         "all_heroes": Hero.objects.all(),
-        "new_hero": Hero.objects.get(id=new_hero_id),
+        "hero_name": new_hero.name,
+        "hero_id": new_hero.id,
+        "hero_hp": new_hero.hp_base,
+        "hero_atk": new_hero.atk_base,
+        "hero_def": new_hero.def_base,
+        "hero_int": new_hero.int_base,
+        "hero_spd": new_hero.spd_base,
+        "hero_gold": new_hero.gold,
+        "hero_gems": new_hero.gems,
     }
 
     return render(request, "god_hero.html", context)
+
+
+def process_god_hero(request):
+    print("Post: " + str(request.POST))
+    print("Session: " + str(request.session))
+
+    hero_name=request.POST["hero_name"]
+    hero_hp=request.POST["hero_hp"]
+    hero_atk=request.POST["hero_atk"]
+    hero_def=request.POST["hero_def"]
+    hero_int=request.POST["hero_int"]
+    hero_spd=request.POST["hero_spd"]
+    hero_gold=request.POST["hero_gold"]
+    hero_gems=request.POST["hero_gems"]
+
+
+    Hero.objects.create(name=hero_name, hp_base=hero_hp, atk_base=hero_atk, def_base=hero_def, int_base=hero_int, spd_base=hero_spd, gold=hero_gold, gems=hero_gems)
+
+    request.session["new_hero_id"]=Hero.objects.last().id
+
+    return redirect("/god_hero")
 
 def edit_hero(request):
     if "edit_name" in request.POST:
@@ -411,20 +524,21 @@ def edit_hero(request):
         name_to_edit=Hero.objects.get(id=hero_to_edit)
         name_to_edit.name=new_name
         name_to_edit.save()
-
-    if "edit_element" in request.POST:
-        hero_to_edit=request.POST["edit_element"]
-        new_element=request.POST["new_element"]
-        element_to_edit=Hero.objects.get(id=hero_to_edit)
-        element_to_edit.element=new_element
-        element_to_edit.save()
-
-    if "edit_gold" in request.POST:
-        hero_to_edit=request.POST["edit_gold"]
-        new_gold=request.POST["new_gold"]
-        gold_to_edit=Hero.objects.get(id=hero_to_edit)
-        gold_to_edit.gold=new_gold
-        gold_to_edit.save()
+    
+    if "edit_user" in request.POST:
+        hero_to_edit=request.POST["edit_user"]
+        new_userid=request.POST["new_user"]
+        new_user=User.objects.get(id=new_userid)
+        name_to_edit=Hero.objects.get(id=hero_to_edit)
+        name_to_edit.user=new_user
+        name_to_edit.save()
+    
+    if "edit_level" in request.POST:
+        hero_id=request.POST["edit_level"]
+        new_level=request.POST["new_level"]
+        hero=Hero.objects.get(id=hero_id)
+        hero.level=new_level
+        hero.save()
 
     if "edit_hp" in request.POST:
         hero_to_edit=request.POST["edit_hp"]
@@ -432,13 +546,6 @@ def edit_hero(request):
         hp_to_edit=Hero.objects.get(id=hero_to_edit)
         hp_to_edit.hp_base=new_hp
         hp_to_edit.save()
-
-    if "edit_gems" in request.POST:
-        hero_to_edit=request.POST["edit_gems"]
-        new_gems=request.POST["new_gems"]
-        gems_to_edit=Hero.objects.get(id=hero_to_edit)
-        gems_to_edit.gems=new_gems
-        gems_to_edit.save()
 
     if "edit_atk" in request.POST:
         hero_to_edit=request.POST["edit_atk"]
@@ -467,56 +574,24 @@ def edit_hero(request):
         spd_to_edit=Hero.objects.get(id=hero_to_edit)
         spd_to_edit.spd_base=new_spd
         spd_to_edit.save()
-
-    # if "edit_wpn1" in request.POST:
-    #     hero_to_edit=request.POST["edit_wpn1"]
-    #     new_wpn1=request.POST["new_wpn1"]
-    #     wpn1_to_edit=Hero.objects.get(id=hero_to_edit)
-    #     wpn1_to_edit.wpn1=new_wpn1
-    #     wpn1_to_edit.save()
     
-    # if "edit_wpn2" in request.POST:
-    #     hero_to_edit=request.POST["edit_wpn2"]
-    #     new_wpn2=request.POST["new_wpn2"]
-    #     wpn2_to_edit=Hero.objects.get(id=hero_to_edit)
-    #     wpn2_to_edit.ability=new_wpn2
-    #     wpn2_to_edit.save()
-
-    # if "edit_armor" in request.POST:
-    #     hero_to_edit=request.POST["edit_armor"]
-    #     new_armor=request.POST["new_armor"]
-    #     armor_to_edit=Hero.objects.get(id=hero_to_edit)
-    #     armor_to_edit.arm=new_armor
-    #     armor_to_edit.save()
-
-    return redirect("/god_hero")
-
-
-def process_god_hero(request):
-    print("Post: " + str(request.POST))
-    print("Session: " + str(request.session))
-
-    hero_name=request.POST["hero_name"]
-    hero_element=request.POST["hero_element"]
-    hero_hp=request.POST["hero_hp"]
-    hero_gold=request.POST["hero_gold"]
-    hero_gems=request.POST["hero_gems"]
-    hero_atk=request.POST["hero_atk"]
-    hero_def=request.POST["hero_def"]
-    hero_int=request.POST["hero_int"]
-    hero_spd=request.POST["hero_spd"]
-    hero_wpn1_id=request.POST["hero_wpn1"]
-    hero_wpn1=Weapon.objects.get(id=hero_wpn1_id)
-    hero_wpn2_id=request.POST["hero_wpn2"]
-    hero_wpn2=Weapon.objects.get(id=hero_wpn2_id)
-    hero_armor_id=request.POST["hero_armor"]
-    hero_armor=Weapon.objects.get(id=hero_armor_id)
-
-    Hero.objects.create(name=hero_name, element=hero_element, hp_base=hero_hp, gold=hero_gold, gems=hero_gems, atk_base=hero_atk, def_base=hero_def, int_base=hero_int, spd_base=hero_spd, wpn1=hero_wpn1, wpn2=hero_wpn2, arm=hero_armor)
-
-    request.session["new_hero_id"]=Hero.objects.last().id
+    if "edit_gold" in request.POST:
+        hero_to_edit=request.POST["edit_gold"]
+        new_gold=request.POST["new_gold"]
+        gold_to_edit=Hero.objects.get(id=hero_to_edit)
+        gold_to_edit.gold=new_gold
+        gold_to_edit.save()
+    
+    if "edit_gems" in request.POST:
+        hero_to_edit=request.POST["edit_gems"]
+        new_gems=request.POST["new_gems"]
+        gems_to_edit=Hero.objects.get(id=hero_to_edit)
+        gems_to_edit.gems=new_gems
+        gems_to_edit.save()
 
     return redirect("/god_hero")
+
+
 
 def del_hero(request):
     print("Post: " + str(request.POST))
@@ -526,6 +601,158 @@ def del_hero(request):
     Hero.objects.get(id=hero_to_delete).delete()
 
     return redirect("/god_hero")
+
+
+####################################
+#####      God of Enemies       #####
+####################################
+def god_enemy(request):
+    print("Post: " + str(request.POST))
+    print("Session: " + str(request.session))
+
+    if "new_enemy_id" in request.session:
+        new_enemy=Enemy.objects.get(id=request.session["new_enemy_id"])
+    # else:
+    #     new_enemy=
+
+
+    userid=request.session["userid"]
+    username=request.session["username"]
+    hero_id=request.session["hero_id"]
+    hero=Hero.objects.get(id=hero_id)
+
+    context = {
+        "userid": userid,
+        "username": username,
+        "all_enemies": Enemy.objects.all(),
+        "hero_name": hero.name,
+        "hero_id": hero_id,
+        # "enemy_name": new_enemy.name,
+        # "enemy_id": new_enemy.id,
+        # "enemy_hp": new_enemy.hp_base,
+        # "enemy_atk": new_enemy.atk_base,
+        # "enemy_def": new_enemy.def_base,
+        # "enemy_int": new_enemy.int_base,
+        # "enemy_spd": new_enemy.spd_base,
+        # "enemy_gold": new_enemy.gold,
+        # "enemy_gems": new_enemy.gems,
+        # "enemy_items": new_enemy.items,
+    }
+
+    return render(request, "god_enemies.html", context)
+
+
+def process_god_enemy(request):
+    print("Post: " + str(request.POST))
+    print("Session: " + str(request.session))
+
+    enemy_name=request.POST["enemy_name"]
+    enemy_hp=request.POST["enemy_hp"]
+    enemy_atk=request.POST["enemy_atk"]
+    enemy_def=request.POST["enemy_def"]
+    enemy_int=request.POST["enemy_int"]
+    enemy_spd=request.POST["enemy_spd"]
+    enemy_gold=request.POST["enemy_gold"]
+    enemy_gems=request.POST["enemy_gems"]
+    # enemy_items=request.POST["enemy_items"]
+    side1=request.POST["side1"]
+    side2=request.POST["side2"]
+    side3=request.POST["side3"]
+    side4=request.POST["side4"]
+    side5=request.POST["side5"]
+    side6=request.POST["side6"]
+
+
+    Enemy.objects.create(name=enemy_name, hp_base=enemy_hp, atk_base=enemy_atk, def_base=enemy_def, int_base=enemy_int, spd_base=enemy_spd, gold=enemy_gold, gems=enemy_gems, s1=side1, s2=side2, s3=side3, s4=side4, s5=side5, s6=side6)
+
+    request.session["new_enemy_id"]=Enemy.objects.last().id
+
+    return redirect("/god_enemy")
+
+def edit_enemy(request):
+    if "edit_name" in request.POST:
+        enemyid=request.POST["edit_name"]
+        new_name=request.POST["new_name"]
+        name_to_edit=Enemy.objects.get(id=enemyid)
+        name_to_edit.name=new_name
+        name_to_edit.save()
+    
+    if "edit_level" in request.POST:
+        enemyid=request.POST["edit_level"]
+        new_level=request.POST["new_level"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.level=new_level
+        enemy.save()
+
+    if "edit_hp" in request.POST:
+        enemyid=request.POST["edit_hp"]
+        new_hp=request.POST["new_hp"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.hp_base=new_hp
+        enemy.save()
+
+    if "edit_atk" in request.POST:
+        enemyid=request.POST["edit_atk"]
+        new_atk=request.POST["new_atk"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.atk_base=new_atk
+        enemy.save()
+
+    if "edit_def" in request.POST:
+        enemyid=request.POST["edit_def"]
+        new_def=request.POST["new_def"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.def_base=new_def
+        enemy.save()
+
+    if "edit_int" in request.POST:
+        enemyid=request.POST["edit_int"]
+        new_int=request.POST["new_int"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.int_base=new_int
+        enemy.save()
+
+    if "edit_spd" in request.POST:
+        enemyid=request.POST["edit_spd"]
+        new_spd=request.POST["new_spd"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.spd_base=new_spd
+        enemy.save()
+    
+    if "edit_gold" in request.POST:
+        enemyid=request.POST["edit_gold"]
+        new_gold=request.POST["new_gold"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.gold=new_gold
+        enemy.save()
+    
+    if "edit_gems" in request.POST:
+        enemyid=request.POST["edit_gems"]
+        new_gems=request.POST["new_gems"]
+        enemy=Enemy.objects.get(id=enemyid)
+        enemy.gems=new_gems
+        enemy.save()
+    
+    # if "edit_items" in request.POST:
+    #     enemyid=request.POST["edit_items"]
+    #     new_items=request.POST["new_items"]
+    #     enemy=Enemy.objects.get(id=enemyid)
+    #     enemy.items=new_items
+    #     enemy.save()
+
+
+    return redirect("/god_enemy")
+
+
+
+def del_enemy(request):
+    print("Post: " + str(request.POST))
+    print("Session: " + str(request.session))
+
+    enemyid=request.POST["delete"]
+    Enemy.objects.get(id=enemyid).delete()
+
+    return redirect("/god_enemy")
 
 
 ####################################
@@ -690,6 +917,28 @@ def process_god_diceface(request):
         # request.session["df_element"]=ArmorDface.objects.last().element
         # request.session["df_ability"]=ArmorDface.objects.last().ability
 
+    return redirect("/god_diceface")
+
+def basic_wpndfaces(request):
+    WpnDface.objects.create(name="ATK 1", roll_value="1", price="50")
+    WpnDface.objects.create(name="ATK 2", roll_value="2", price="150")
+    WpnDface.objects.create(name="ATK 3", roll_value="3", price="450")
+    WpnDface.objects.create(name="ATK 4", roll_value="4", price="1350")
+    WpnDface.objects.create(name="ATK 5", roll_value="5", price="4050")
+    WpnDface.objects.create(name="ATK 6", roll_value="6", price="12150")
+    WpnDface.objects.create(name="ATK 0", roll_value="0", price="0")
+    request.session["df_type"]="WpnDface"
+    return redirect("/god_diceface")
+
+def basic_armordfaces(request):
+    ArmorDface.objects.create(name="DEF 1", roll_value="1", price="100")
+    ArmorDface.objects.create(name="DEF 2", roll_value="2", price="300")
+    ArmorDface.objects.create(name="DEF 3", roll_value="3", price="900")
+    ArmorDface.objects.create(name="DEF 4", roll_value="4", price="2700")
+    ArmorDface.objects.create(name="DEF 5", roll_value="5", price="8100")
+    ArmorDface.objects.create(name="DEF 6", roll_value="6", price="24300")
+    ArmorDface.objects.create(name="DEF 0", roll_value="0", price="0")
+    request.session["df_type"]="ArmorDface"
     return redirect("/god_diceface")
 
 def del_diceface(request):
@@ -916,6 +1165,25 @@ def process_god_dice(request):
 
     return redirect("/god_dice")
 
+def basic_wpndice(request):
+    WpnDice.objects.create(name="WpnDie 1", price="1000")
+    WpnDice.objects.create(name="WpnDie 2", price="1000")
+    WpnDice.objects.create(name="WpnDie 3", price="1000")
+    WpnDice.objects.create(name="WpnDie 4", price="1000")
+    WpnDice.objects.create(name="WpnDie 5", price="1000")
+    WpnDice.objects.create(name="WpnDie 6", price="1000")
+    request.session["dice_type"]="WpnDice"
+    return redirect("/god_dice")
+
+def basic_armordice(request):
+    ArmorDice.objects.create(name="ArmorDie 1", price="2000")
+    ArmorDice.objects.create(name="ArmorDie 2", price="2000")
+    ArmorDice.objects.create(name="ArmorDie 3", price="2000")
+    ArmorDice.objects.create(name="ArmorDie 4", price="2000")
+    ArmorDice.objects.create(name="ArmorDie 5", price="2000")
+    ArmorDice.objects.create(name="ArmorDie 6", price="2000")
+    request.session["dice_type"]="ArmorDice"
+    return redirect("/god_dice")
 
 def edit_dice(request):
     print("Post: " + str(request.POST))
@@ -1043,7 +1311,7 @@ def god_equip(request):
             db_title="Weapons"
             new_equip_type="Weapons"
         if request.session["equip_type"]=="Armor":
-            equip_db=ArmorDice.objects.all()
+            equip_db=Armor.objects.all()
             db_title="Armor"
             new_equip_type="Armor"
     if "equip_type" in request.POST:
@@ -1051,7 +1319,7 @@ def god_equip(request):
         if request.POST["equip_type"]=="Weapon":
             equip_db=Weapon.objects.all()
             db_title="Weapon"
-        if request.POST["equip_type"]=="ArmorDice":
+        if request.POST["equip_type"]=="Armor":
             equip_db=Armor.objects.all()
             db_title="Armor"
 
@@ -1094,22 +1362,163 @@ def god_equip(request):
     return render(request, "god_equip.html", context)
 
 def process_god_equip(request):
-    pass
+    print("Post: " + str(request.POST))
+    print("Session: " + str(request.session))
+
+    if "equip_type" not in request.POST:
+        request.session["error_msg"] = "Please select a Equipment type"
+        return redirect("/god_equip")
+
+
+    #[SESSION] from post data
+    request.session["equip_name"]=request.POST["equip_name"]
+    request.session["equip_type"]=request.POST["equip_type"]
+
+    request.session["hp_boost"]=request.POST["hp_boost"]
+    request.session["atk_boost"]=request.POST["atk_boost"]
+    request.session["def_boost"]=request.POST["def_boost"]
+    request.session["int_boost"]=request.POST["int_boost"]
+    request.session["spd_boost"]=request.POST["spd_boost"]
+    request.session["slots"]=request.POST["slots"]
+    request.session["equip_ability"]=request.POST["equip_ability"]
+    request.session["equip_element"]=request.POST["equip_element"]
+    request.session["equip_price"]=request.POST["equip_price"]
+
+
+    #[VARIABLES] from session
+    equip_name=request.session["equip_name"]
+    hp_boost=request.session["hp_boost"]
+    atk_boost=request.session["atk_boost"]
+    def_boost=request.session["def_boost"]
+    int_boost=request.session["int_boost"]
+    spd_boost=request.session["spd_boost"]
+    slots=request.session["slots"]
+    ability=request.session["equip_ability"]
+    element=request.session["equip_element"]
+    price=int(request.session["equip_price"])
+
+    #[CREATE] Weapon
+    if request.POST["equip_type"] == "Weapon":
+        request.session["equip_type"] = request.POST["equip_type"]
+        Weapon.objects.create(name=equip_name, hp_boost=hp_boost, atk_boost=atk_boost, def_boost=def_boost, int_boost=int_boost, spd_boost=spd_boost, slots=slots, price=price)
+        request.session["equip_id"]=Weapon.objects.last().id
+        # request.session["equip_name"]=Weapon.objects.last().name
+        # request.session["equip_price"]=Weapon.objects.last().price
+        # request.session["df_ability"]=WpnDface.objects.last().ability
+
+    #[CREATE] Armor
+    if request.POST["equip_type"] == "Armor":
+        request.session["equip_type"] = request.POST["equip_type"]
+        Armor.objects.create(name=equip_name, hp_boost=hp_boost, atk_boost=atk_boost, def_boost=def_boost, int_boost=int_boost, spd_boost=spd_boost, slots=slots, price=price)
+        request.session["equip_id"]=Armor.objects.last().id
+        # request.session["equip_name"]=Armor.objects.last().name
+        # request.session["equip_price"]=Armor.objects.last().price
+        # request.session["df_ability"]=ArmorDface.objects.last().ability
+
+    return redirect("/god_equip")
 
 def edit_equip(request):
-    pass
+    print("Post: " + str(request.POST))
+    print("Session: " + str(request.session))
+    
+    if request.session["equip_type"] == "Weapon":
+        Equipment=Weapon
+    if request.session["equip_type"] == "Armor":
+        Equipment=Armor
+
+    if "edit_owner" in request.POST:
+        equipid=request.POST["edit_owner"]
+        new_ownerid=request.POST["new_owner"]
+        new_owner=Hero.objects.get(id=request.session["userid"])
+        equip=Equipment.objects.get(id=equipid)
+        new_owner.add_owner(equip)
+        new_owner.save()
+
+    if "edit_name" in request.POST:
+        equip_to_edit=request.POST["edit_name"]
+        new_name=request.POST["new_name"]
+        name_to_edit=Equipment.objects.get(id=equip_to_edit)
+        name_to_edit.name=new_name
+        name_to_edit.save()
+
+    if "edit_price" in request.POST:
+        equip_to_edit=request.POST["edit_price"]
+        new_price=request.POST["new_price"]
+        price_to_edit=Equipment.objects.get(id=equip_to_edit)
+        price_to_edit.price=new_price
+        price_to_edit.save()
+    
+    if "edit_hp" in request.POST:
+        equip_to_edit=request.POST["edit_hp"]
+        new_hp=request.POST["new_hp"]
+        hp_to_edit=Equipment.objects.get(id=equip_to_edit)
+        hp_to_edit.hp_boost=new_hp
+        hp_to_edit.save()
+    
+    if "edit_atk" in request.POST:
+        equip_to_edit=request.POST["edit_atk"]
+        new_atk=request.POST["new_atk"]
+        atk_to_edit=Equipment.objects.get(id=equip_to_edit)
+        atk_to_edit.atk_boost=new_atk
+        atk_to_edit.save()
+    
+    if "edit_def" in request.POST:
+        equip_to_edit=request.POST["edit_def"]
+        new_def=request.POST["new_def"]
+        def_to_edit=Equipment.objects.get(id=equip_to_edit)
+        def_to_edit.def_boost=new_def
+        def_to_edit.save()
+    
+    if "edit_int" in request.POST:
+        equip_to_edit=request.POST["edit_int"]
+        new_int=request.POST["new_int"]
+        int_to_edit=Equipment.objects.get(id=equip_to_edit)
+        int_to_edit.int_boost=new_int
+        int_to_edit.save()
+    
+    if "edit_spd" in request.POST:
+        equip_to_edit=request.POST["edit_spd"]
+        new_spd=request.POST["new_spd"]
+        spd_to_edit=Equipment.objects.get(id=equip_to_edit)
+        spd_to_edit.spd_boost=new_spd
+        spd_to_edit.save()
+    
+    if "edit_slots" in request.POST:
+        equip_to_edit=request.POST["edit_slots"]
+        new_slots=request.POST["new_slots"]
+        slots_to_edit=Equipment.objects.get(id=equip_to_edit)
+        slots_to_edit.slots=new_slots
+        slots_to_edit.save()
+    
+    if "edit_ability" in request.POST:
+        equip_to_edit=request.POST["edit_ability"]
+        new_ability=request.POST["new_ability"]
+        ability_to_edit=Equipment.objects.get(isd=equip_to_edit)
+        ability_to_edit.ability=new_ability
+        ability_to_edit.save()
+    
+    if "edit_element" in request.POST:
+        equip_to_edit=request.POST["edit_element"]
+        new_element=request.POST["new_element"]
+        element_to_edit=Equipment.objects.get(id=equip_to_edit)
+        element_to_edit.element=new_element
+        element_to_edit.save()
+
+    return redirect("/god_equip")
 
 def del_equip(request):
-    pass
+    print("Post: " + str(request.POST))
+    print("Session: " + str(request.session))
 
-####################################
-#####       Armor God          #####
-####################################
-def god_armor(request):
-    pass
+    equip_id=request.POST["delete"]
 
-def process_god_armor(request):
-    pass
+    if request.session["equip_type"] == "Weapon":
+        Weapon.objects.get(id=equip_id).delete()
+    if request.session["equip_type"] == "Armor":
+        Armor.objects.get(id=equip_id).delete()
+
+    return redirect("/god_equip")
+
 
 ####################################
 #####        Item God          #####
@@ -1129,6 +1538,8 @@ def equipment_shop(request):
     hero_name=Hero.objects.get(id=hero_id).name
     userid=request.session["userid"]
     username=request.session["username"]
+    hero_weapons = Hero.objects.get(id=hero_id).weapons.all()
+    hero_armors = Hero.objects.get(id=hero_id).armors.all()
 
     context = {
         "hero_id": hero_id,
@@ -1136,9 +1547,11 @@ def equipment_shop(request):
         "userid": userid,
         "username": username,
         "hero": hero,
+        "hero_weapons": hero_weapons,
+        "hero_armors": hero_armors,
     }
 
-    return render(request, "shop.html", context)
+    return render(request, "equipment_shop.html", context)
 
 def process_equipment_shop(request):
     pass
@@ -1150,10 +1563,66 @@ def process_dice_shop(request):
     pass
 
 def levelup(request):
-    pass
+
+    hero_id=request.session["hero_id"]
+    hero=Hero.objects.get(id=hero_id)
+    hero_name=Hero.objects.get(id=hero_id).name
+    userid=request.session["userid"]
+    username=request.session["username"]
+    hero_weapons = Hero.objects.get(id=hero_id).weapons.all()
+    hero_armors = Hero.objects.get(id=hero_id).armors.all()
+
+    #determine price
+    level=hero.level
+    price=10+(1*(level-1))
+
+    #too poor
+    if "too_poor" in request.session:
+        too_poor = request.session["too_poor"]
+    else:
+        too_poor = " "
+
+    context = {
+        "hero_id": hero_id,
+        "hero_name": hero_name,
+        "userid": userid,
+        "username": username,
+        "hero": hero,
+        "hero_weapons": hero_weapons,
+        "hero_armors": hero_armors,
+        "price": price,
+        "too_poor": too_poor,
+    }
+
+    if "too_poor" in request.session:
+        del request.session["too_poor"]
+
+    return render (request, "levelup.html", context)
 
 def process_levelup(request):
-    pass
+    hero=Hero.objects.get(id=request.session["hero_id"])
+    price=10+(1*(hero.level-1))
+
+    if price>hero.gems:
+        request.session["too_poor"]= "You don't have enough gems to level up"
+        return redirect("/levelup")
+
+    if "hp_up" in request.POST:
+        hero.hp_base=int(hero.hp_base)+int(request.POST["hp_up"])
+        print(int(hero.hp_base)+int(request.POST["hp_up"]))
+    if "atk_up" in request.POST:
+        hero.atk_base=int(hero.atk_base)+int(request.POST["atk_up"])
+    if "def_up" in request.POST:
+        hero.def_base=int(hero.def_base)+int(request.POST["def_up"])
+    if "int_up" in request.POST:
+        hero.int_base=int(hero.int_base)+int(request.POST["int_up"])
+    if "spd_up" in request.POST:
+        hero.spd_base=int(hero.spd_base)+int(request.POST["spd_up"])
+    hero.level=int(hero.level)+1
+    hero.gems=int(hero.gems)-price
+    hero.save()
+
+    return redirect("/levelup")
 
 
 ####################################

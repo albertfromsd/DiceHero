@@ -15,14 +15,23 @@
 
 }
 
+body {
+    background-color: rgb(255, 255, 255)
+}
+
 .flex-center {
     display: flex;
     justify-content: center;
 }
 
+.flex-col {
+    flex-flow: column;
+}
+
 .entire_page {
     width: 500px;
     height: 700px;
+
 }
 
 .header {
@@ -42,6 +51,9 @@
     
 }
 
+.text-white {
+    color: white;
+}
 
 .top_buttons {
     height: 35px;
@@ -53,6 +65,9 @@
 .main_content {
     width: 100%;
     height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 label {

@@ -11,7 +11,10 @@
 
 </head>
 <body>
-    <div class="container entire_page">
+    <div class="container-fluid entire_page">
+<!-- ################################ -->
+<!-- ######       Nav Bar      ###### -->
+<!-- ################################ -->
         <nav class="navbar navbar-expand navbar-dark bg-dark md-light container-fluid">
             <a class="navbar-brand" href="#"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,48 +28,41 @@
                             God Mode
                         </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item">
-                                    <form action="/god_hero">
-                                        <button class="btn-block">Create/Modify Hero</button>
-                                    </form>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_diceface">
-                                        <button class="btn-block">Create Dice Faces </button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_hero">
+                                    <button class="btn-block">God of Heroes</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_wpn_dice">
-                                        <button class="btn-block">Create Weapon Dice</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_equip">
+                                    <button class="btn-block">God of Equipment</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_weapon">
-                                        <button class="btn-block">Create Weapons</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_dice">
+                                    <button class="btn-block">God of Dice</button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_armor_dice">
-                                        <button class="btn-block">Create Armor Dice</button>
-                                    </form>
-                                </a>
-
+                            <a class="dropdown-item">
+                                <form action="/god_diceface">
+                                    <button class="btn-block">God of Dicefaces </button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_armor">
-                                        <button class="btn-block">Create Armor</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_enemy">
+                                    <button class="btn-block">God of Enemies </button>
+                                </form>
+                            </a>
                             <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">
-                                    <form action="/god_item">
-                                        <button class="btn-block">Create Items</button>
-                                    </form>
-                                </a>
+                            <a class="dropdown-item">
+                                <form action="/god_item">
+                                    <button class="btn-block">God of Items</button>
+                                </form>
+                            </a>
                             </div>
                     </li>  <!-- [end] godmode dropdown -->
                     <li class="nav-item dropdown">
@@ -94,6 +90,14 @@
                         </div>
                     </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    
+                    <li class="nav-item">
                         <form action='/inspect_hero'>
                             {% csrf_token %}
                             <input type='hidden'>
@@ -112,8 +116,11 @@
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create<br>New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -128,37 +135,20 @@
         </nav>
         <!-- end of header -->
         <div class="main_content">
+            <br>
+            <h3 class="text-center"> Create a new hero here! </h3>
+            <h6 class="text-center" style="color: {{color}}"> {{message}} </h4>
             <div class="create_hero_box">
                 <form action='/process_create_hero' method='post' class="create_hero_box">
                     {% csrf_token %}
                     <div class="create_hero_bar">
                         <label for="new_hero_name">Hero Name:</label>
                         <input type="text" name="hero_name" class="input_bar">
-                    </div>
-                    <div class="text_bar">
-                        <!-- jQuery here -->
-                        <p class="text">Available Stat Points: </p>
-                    </div>
+                    </div> 
                     <div class="create_hero_bar">
-                        <label>HP: </label>
-                        <input type="number" name="hp_base" value="100" class="input_bar">
-                    </div>
-                    <div class="create_hero_bar">
-                        <label>Attack: </label>
-                        <input type="number" name="atk_base" value="1" class="input_bar">
-                    </div>
-                    <div class="create_hero_bar">
-                        <label>Defense: </label>
-                        <input type="number" name="def_base" value="1" class="input_bar">
-                    </div>
-                    <div class="create_hero_bar">
-                        <label>Intelligence: </label>
-                        <input type="number" name="int_base" value="1" class="input_bar">
-                    </div>
-                    <div class="create_hero_bar">
-                        <label>Speed: </label>
-                        <input type="number" name="spd_base" value="1" class="input_bar">
-                    </div>
+                        <label for="new_hero_name">Weapon name:</label>
+                        <input type="text" name="weapon_name" class="input_bar">
+                    </div> 
                     <div class="create_button">
                         <input type='hidden' name='model_button' value="create_hero">
                         <button type='submit' class="btn btn-primary">Submit</button>
@@ -168,10 +158,6 @@
             </div>
         </div>
         <!-- end of main content -->
-        <div class="footer">
-
-        </div>
-        <!-- end of footer -->
     </div>
     </div>
     <!-- end of entire page     -->

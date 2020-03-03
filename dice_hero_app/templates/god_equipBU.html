@@ -71,7 +71,7 @@
                                 </a>
                             <div class="dropdown-divider"></div>
                                 <a class="dropdown-item">
-                                    <form action="/god_equipment">
+                                    <form action="/god_equip">
                                         <button class="btn-block">Create Equipment</button>
                                     </form>
                                 </a>
@@ -108,6 +108,13 @@
                         </div>
                     </li>  <!-- [end] of Shops -->
                     <li class="nav-item">
+                        <form action='/dice_hero'>
+                            {% csrf_token %}
+                            <input type='hidden'>
+                            <button type='submit'class="nav-link bg-dark md-light">Main Battle</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
                         <form action='/inspect_hero'>
                             {% csrf_token %}
                             <input type='hidden'>
@@ -126,11 +133,11 @@
                     </li>
                     <li class="nav-item">
                         <form action="/create_hero">
-                            <button type="submit" class="nav-link bg-dark md-light">Create<br>New Hero</button>
+                            <button type="submit" class="nav-link bg-dark md-light">New Hero</button>
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Logged in as:<br>{{ username }} [ID: {{ userid }}]</a>
+                        <a class="nav-link disabled" href="#">User:<br>{{ username }} [ID: {{ userid }}]</a>
                     </li>
                     <li class="nav-item">
                         <form action='/dice_reset' method="post">
@@ -152,7 +159,7 @@
     <h6 class="text-center" style="color: {{msg_color}}">{{ error_msg }}</h6>    
     <div class="main_content">
         <div class="create_box">
-            <form action='/process_god_equipment' method='post' class="form_box">
+            <form action='/process_god_equip' method='post' class="form_box">
                 {% csrf_token %}
                 <div class="input_box">
                     <div class="create_label_column">
@@ -160,7 +167,7 @@
                             <label for="equip_name">Equip. Name:</label>
                         </div>
                         <div class="input_label">
-                            <label for="equip_type">{{ equip_type }}:</label>
+                            <label for="equip_type">Equip. Type:</label>
                         </div>
                         <div class="input_label">
                             <label for="hp_boost">HP Boost:</label>
@@ -234,8 +241,8 @@
             <!-- SUBMIT BUTTON -->
                 <br>
                 <div class="input_bar">
-                    <input type='hidden' name='god_wpn_dice'>
-                    <button type='submit' class="btn btn-primary btn-block">Create Weapon</button>
+                    <input type='hidden' name='god_equip'>
+                    <button type='submit' class="btn btn-primary btn-block">Create Equipment</button>
                 </div>
                 </form>
             </div> <!-- [end] create box -->
@@ -306,64 +313,63 @@
                     <th scope="col">Delete</th>
                 </tr>
             </thead>
-            {% for dice in dice_db %}
+            {% for equip in equip_db %}
                 <tr class="text-center data" scope="row">
-                    <td> {{ dice.id }} </td>
+                    <td> {{ equip.id }} </td>
                     <td>
-                        {{ dice.owner.name }}<br>#{{dice.owner.id}} <br>
-                        <form action="/edit_dice" method="post" class="edit_form">
+                        {{ equip.owner.name }}<br>#{{equip.owner.id}} <br>
+                        <form action="/edit_equip" method="post" class="edit_form">
                             {% csrf_token %}
                             <p><input type="text" name="new_owner" class="container-fluid input_text"></p>
-                            <button type="hidden" name="edit_owner" placeholder="Hero ID#" value="{{dice.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
+                            <button type="hidden" name="edit_owner" placeholder="Hero ID#" value="{{equip.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
                         </form>
                     </td>
-                    <td>
-                        {{ dice.parent.name }}<br> #{{dice.parent.id}} <br>
-                        <form action="/edit_dice" method="post" class="edit_form">
-                            {% csrf_token %}
-                            <p><input type="text" name="new_parent" class="container-fluid input_text"></p>
-                            <button type="hidden" name="edit_parent" placeholder="Parent Die ID#" value="{{dice.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
-                        </form>
-                    </td>
-                    <td> {{ dice.name }} <br><br>
-                        <form action="/edit_dice" method="post" class="edit_form">
+                    <td> {{ equip.name }} <br><br>
+                        <form action="/edit_equip" method="post" class="edit_form">
                             {% csrf_token %}
                             <p><input type="text" name="new_name" class="container-fluid input_text"></p>
-                            <button type="hidden" name="edit_name" value="{{dice.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
+                            <button type="hidden" name="edit_name" value="{{equip.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
                         </form>
                     </td>
-                    <td> {{ dice.price }} <br><br>
-                        <form action="/edit_dice" method="post" class="edit_form">
+                    <td> {{ equip.price }} <br><br>
+                        <form action="/edit_equip" method="post" class="edit_form">
                             {% csrf_token %}
                             <p><input type="text" name="new_price" class="container-fluid input_text"></p>
-                            <button type="hidden" name="edit_price" value="{{dice.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                            <button type="hidden" name="edit_price" value="{{equip.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
                         </form>
                     </td>
-                    <td> View faces <br><br>
-                        <form action="/edit_dice" method="post" class="edit_form">
+                    <td>  <br><br>
+                        <form action="/edit_equip" method="post" class="edit_form">
                             {% csrf_token %}
-                            <p><input type="text" name="view_dfaces" class="container-fluid input_text"></p>
-                            <button type="hidden" name="view_dfaces" value="{{dice.id}}" class="btn-basic text-small pad-sides edit_btn">View</button>
+                            <p><input type="text" name="view_boosts" class="container-fluid input_text"></p>
+                            <button type="hidden" name="view_boosts" value="{{equip.id}}" class="btn-basic text-small pad-sides edit_btn">View</button>
+                        </form>
+                    </td>
+                    <td> {{ equip.slots }} <br><br>
+                        <form action="/edit_equip" method="post">
+                            {% csrf_token %}
+                            <p><input type="text" name="new_slots" class="container-fluid input_text"></p>
+                            <button type="hidden" name="edit_slots" value="{{equip.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
                         </form>
                     </td>                    
-                    <td> {{ dice.ability }} <br><br>
-                        <form action="/edit_diceface" method="post">
+                    <td> {{ equip.ability }} <br><br>
+                        <form action="/edit_equip" method="post">
                             {% csrf_token %}
                             <p><input type="text" name="new_ability" class="container-fluid input_text"></p>
-                            <button type="hidden" name="edit_ability" value="{{dice.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                            <button type="hidden" name="edit_ability" value="{{equip.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
                         </form>
                     </td>
-                    <td> {{ df.element }} <br><br>
-                        <form action="/edit_diceface" method="post" class="edit_form">
+                    <td> {{ equip.element }} <br><br>
+                        <form action="/edit_equip" method="post" class="edit_form">
                             {% csrf_token %}
                             <p><input type="text" name="new_element" class="container-fluid input_text"></p>
-                            <button type="hidden" name="edit_element" value="{{dice.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
+                            <button type="hidden" name="edit_element" value="{{equip.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
                         </form>
                     </td>
                     <td>                    
-                        <form action='/del_dice' method='post'>
+                        <form action='/del_equip' method='post'>
                             {% csrf_token %}
-                            <input type='hidden' name='delete' value={{dice.id}}><br><br>
+                            <input type='hidden' name='delete' value={{equip.id}}><br><br>
                             <button type='submit'class="btn-danger">Delete</button>
                         </form>
                     </td>
@@ -372,128 +378,7 @@
         </table>
     </div> <!-- [end] database -->
 </div> <!-- end of container entire page     -->
-<!-- ################################# -->
-<!-- ######      OGOGOGO       ###### -->
-<!-- ################################# -->
-        <div class="row">
-            <p class="text creation"><span class="text-center font-weight-bold">New Weapon:</span><br> 
-                Name: {{ weapon_name }} [ID: {{ weapon_id }}]<br>
-                Element: {{ weapon_element }}<br>
-                Price: {{ weapon_price }} gold<br>
-                Slot #1: {{ wpn_dslot1 }} <br>
-                Slot #2: {{ wpn_dslot2 }} <br>
-                Slot #3: {{ wpn_dslot3 }} <br>
-                Slot #4: {{ wpn_dslot4 }} <br>
-                Slot #5: {{ wpn_dslot5 }} <br>
-                Slot #6: {{ wpn_dslot6 }} <br>
-            </p>
-        </div> <!-- [end] row -->
-        <div class="row database" style="overflow: auto">
-            <table class="table-striped table container-fluid">
-                <thead class="thead-dark">
-                    <tr class="text-center">
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Element</th>
-                        <th scope="col">Ability</th>
-                        <th scope="col">Slot1</th>
-                        <th scope="col">Slot2</th>
-                        <th scope="col">Slot3</th>
-                        <th scope="col">Slot4</th>
-                        <th scope="col">Slot5</th>
-                        <th scope="col">Slot6</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                {% for weapon in all_weapons %}
-                    <tr class="text-center" scope="row">
-                        <td> {{ weapon.id }} </td>
-                        <td> {{ weapon.name }} <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="New Name" name="new_name" class="container-fluid"></p>
-                                <button type="hidden" name="edit_name" value="{{weapon.id}}" class="btn-basic pad-sides text-small edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.price }} <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="number" placeholder="New #" name="new_price" class="container-fluid"></p>
-                                <button type="hidden" name="edit_price" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.element }} <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="Element" name="new_element" class="container-fluid"></p>
-                                <button type="hidden" name="edit_element" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.ability }} <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="Ability ID#" name="new_ability" class="container-fluid"></p>
-                                <button type="hidden" name="edit_ability" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.dslot1.name }}: #{{ weapon.dslot1.id }} <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="New #" name="new_df1_id" class="container-fluid"></p>
-                                <button type="hidden" name="edit_df1" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.dslot2.name }}: #{{ weapon.dslot2.id }}  <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="New #" name="new_df2_id" class="container-fluid"></p>
-                                <button type="hidden" name="edit_df2" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.dslot3.name }}: #{{ weapon.dslot3.id }} :  <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="New #" name="new_df3_id" class="container-fluid"></p>
-                                <button type="hidden" name="edit_df3" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.dslot4.name }}: #{{ weapon.dslot4.id }}  <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="New #" name="new_df4_id" class="container-fluid"></p>
-                                <button type="hidden" name="edit_df4" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.dslot5.name }}: #{{ weapon.dslot5.id }}  <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="New #" name="new_df5_id" class="container-fluid"></p>
-                                <button type="hidden" name="edit_df5" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
-                        <td> {{ weapon.dslot6.name }}: #{{ weapon.dslot6.id }}  <br>
-                            <form action="/edit_weapon" method="post">
-                                {% csrf_token %}
-                                <p><input type="text" placeholder="New #" name="new_df6_id" class="container-fluid"></p>
-                                <button type="hidden" name="edit_df6" value="{{weapon.id}}" class="btn-basic text-small pad-sides edit_btn">Edit</button>
-                            </form>
-                        </td>
 
-                        <td>                    
-                            <form action='/del_wpn_dice' method='post'>
-                                {% csrf_token %}
-                                <input type='hidden' name='delete' value={{weapon.id}}>
-                                <button type='submit'class="btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-
-        </div>
-    </div>
-    <!-- end of container entire page     -->
 
 <!-- ######   [START] More jQuery Source   ###### -->
     <!-- <script src="js/bootstrap.min.js"></script> -->

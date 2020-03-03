@@ -12,6 +12,7 @@
 </head>
 <body>
     <div class="container entire_page">
+        <br><br><br><br>
         <div class="row">
             <p class="title">Login to Dice Hero! </p>
         </div>
@@ -26,11 +27,11 @@
                         <form action='/process_login' method='post' class="user_login">
                             {% csrf_token %}
                             <div class="login_bar">
-                                <label for="username">Username:</label>
+                                <label for="username" class="text-white">Username:</label>
                                 <input type="text" name="username" class="input_bar">
                             </div>
                             <div class="login_bar">
-                                <label for="password">Password:</label>
+                                <label for="password" class="text-white">Password:</label>
                                 <input type="password" name="password" class="input_bar">
                             </div>
                             <br>
